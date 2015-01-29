@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Httwrap.Interface
 {
-    public interface IHttwrapHttpClient
+    public interface IHttwrapClient
     {
         Task<HttwrapResponse> GetAsync(string path, HttwrapErrorHandlingDelegate errorHandler = null);
         Task<HttwrapResponse> PutAsync<T>(string path, T data, HttwrapErrorHandlingDelegate errorHandler = null);

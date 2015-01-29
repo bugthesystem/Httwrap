@@ -9,7 +9,7 @@ namespace Httwrap
 {
     public delegate void HttwrapErrorHandlingDelegate(HttpStatusCode statusCode, string responseBody);
 
-    public sealed class HttwrapHttpClient : IHttwrapHttpClient
+    public sealed class HttwrapClient : IHttwrapClient
     {
         private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
@@ -22,7 +22,7 @@ namespace Httwrap
             }
         };
 
-        public HttwrapHttpClient(IHttwrapConfiguration configuration)
+        public HttwrapClient(IHttwrapConfiguration configuration)
         {
             _configuration = configuration;
         }

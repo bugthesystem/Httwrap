@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Httwrap.Interface;
+﻿using Httwrap.Interface;
+using NUnit.Framework;
 
 namespace Httwrap.Tests
 {
@@ -8,7 +8,7 @@ namespace Httwrap.Tests
         protected override void FinalizeSetUp()
         {
             IHttwrapConfiguration configuration = new TestConfiguration("http://localapi/v1/");
-            IHttwrapHttpClient restRequestClient = new HttwrapHttpClient(configuration);
+            IHttwrapClient restRequestClient = new HttwrapClient(configuration);
         }
 
         [Test]

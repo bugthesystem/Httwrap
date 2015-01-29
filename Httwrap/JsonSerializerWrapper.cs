@@ -4,10 +4,6 @@ namespace Httwrap
 {
     internal class JsonSerializerWrapper
     {
-        public JsonSerializerWrapper()
-        {
-
-        }
         public T DeserializeObject<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
