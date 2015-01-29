@@ -1,0 +1,15 @@
+configuration: Release
+branches:
+  only:
+    - master
+
+before_build:
+  - nuget restore Httwrap.sln
+
+build:
+  project: Httwrap.sln       
+  verbosity: minimal
+
+test:
+  assemblies:
+    - '**\*.Tests.dll'
