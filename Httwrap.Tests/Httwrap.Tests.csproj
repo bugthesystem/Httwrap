@@ -64,13 +64,13 @@
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Httwrap\Httwrap.csproj">
-      <Project>{ACA3C3D7-6CEE-4F46-8C86-4D64A9BDDA7C}</Project>
-      <Name>Httwrap</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Httwrap\Httwrap.csproj">
+      <Project>{F17284F8-5561-4C64-9BD4-5A94521B9644}</Project>
+      <Name>Httwrap</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
