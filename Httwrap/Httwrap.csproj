@@ -54,7 +54,7 @@
     <Compile Include="IRequestContent.cs" />
     <Compile Include="JsonRequestContent.cs" />
     <Compile Include="JsonSerializerWrapper.cs" />
-    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="JExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using Httwrap.Interface;
 
 namespace Httwrap
 {
@@ -9,7 +10,7 @@ namespace Httwrap
     {
         private const string JsonMimeType = "application/json";
 
-        public JsonRequestContent(object val, JsonSerializerWrapper serializerWrapper)
+        public JsonRequestContent(object val, ISerializer serializerWrapper)
         {
             if (EqualityComparer<object>.Default.Equals(val))
             {
@@ -26,7 +27,7 @@ namespace Httwrap
         }
 
         private object Value { get; set; }
-        private JsonSerializerWrapper SerializerWrapper { get; set; }
+        private ISerializer SerializerWrapper { get; set; }
 
         public HttpContent GetContent()
         {

@@ -12,6 +12,6 @@ namespace Httwrap.Tests
         }
 
         public string BasePath { get; private set; }
-        public ISerializer Serializer { get; private set; }
+        public ISerializer Serializer { get; set; }
     }
 }

@@ -7,14 +7,13 @@ using Httwrap.Interface;
 
 namespace Httwrap
 {
-    public delegate void HttwrapErrorHandlingDelegate(HttpStatusCode statusCode, string responseBody);
-
     public sealed class HttwrapClient : IHttwrapClient
     {
         private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
+        private readonly ISerializer _serializer;
 
-        private readonly HttwrapErrorHandlingDelegate _defaultErrorHandlingDelegate = (statusCode, body) =>
+        private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
             if (statusCode < HttpStatusCode.OK || statusCode >= HttpStatusCode.BadRequest)
             {
@@ -25,32 +24,33 @@ namespace Httwrap
         public HttwrapClient(IHttwrapConfiguration configuration)
         {
             _configuration = configuration;
+            _serializer = _configuration.Serializer ?? new JsonSerializerWrapper();
         }
 
-        public async Task<HttwrapResponse> GetAsync(string path, HttwrapErrorHandlingDelegate errorHandler = null)
+        public async Task<HttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
         }
 
         public async Task<HttwrapResponse> PutAsync<T>(string path, T data,
-            HttwrapErrorHandlingDelegate errorHandler = null)
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler);
         }
 
         public async Task<HttwrapResponse> PostAsync<T>(string path, T data,
-            HttwrapErrorHandlingDelegate errorHandler = null)
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(HttpMethod.Post, path, data, errorHandler);
         }
 
-        public async Task<HttwrapResponse> DeleteAsync(string path, HttwrapErrorHandlingDelegate errorHandler = null)
+        public async Task<HttwrapResponse> DeleteAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(HttpMethod.Delete, path, null, errorHandler);
         }
 
         public async Task<HttwrapResponse> PatchAsync<T>(string path, T data,
-            HttwrapErrorHandlingDelegate errorHandler = null)
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler);
         }
@@ -61,7 +61,7 @@ namespace Httwrap
         }
 
         private async Task<HttwrapResponse> RequestAsync(HttpMethod method, string path, object body,
-            HttwrapErrorHandlingDelegate errorHandler = null)
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             var response =
                 await
@@ -88,7 +88,6 @@ namespace Httwrap
                     client.Timeout = requestTimeout.Value;
                 }
 
-
                 var request = PrepareRequest(method, body, path);
 
                 return await client.SendAsync(request, completionOption, cancellationToken);
@@ -113,7 +112,7 @@ namespace Httwrap
 
             if (body != null)
             {
-                var content = new JsonRequestContent(body, new JsonSerializerWrapper());
+                var content = new JsonRequestContent(body, _serializer);
                 var requestContent = content.GetContent();
                 request.Content = requestContent;
             }
@@ -121,8 +120,7 @@ namespace Httwrap
             return request;
         }
 
-        private void HandleIfErrorResponse(HttpStatusCode statusCode, string responseBody,
-            HttwrapErrorHandlingDelegate errorHandler)
+        private void HandleIfErrorResponse(HttpStatusCode statusCode, string responseBody, Action<HttpStatusCode, string> errorHandler)
         {
             if (errorHandler == null)
             {
@@ -130,7 +128,7 @@ namespace Httwrap
             }
 
             errorHandler(statusCode, responseBody);
-            _defaultErrorHandlingDelegate(statusCode, responseBody);
+            _defaultErrorHandler(statusCode, responseBody);
         }
     }
 }
