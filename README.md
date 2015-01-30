@@ -3,6 +3,11 @@ General purpose HttpClient wrapper
 
 [![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)
 
+## How to use  
+```cs
+PM> Install-Package Httwrap
+```
+
 ##Bugs
 If you encounter a bug, performance issue, or malfunction, please add an [Issue](https://github.com/ziyasal/Httwrap/issues) with steps on how to reproduce the problem.
 
