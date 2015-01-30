@@ -21,7 +21,8 @@ HttwrapResponse<List<string>> response = await _httwrap.GetAsync<List<string>>("
 ```csharp
 HttwrapResponse response = await _httwrap.GetAsync("api/values");
 List<string> values = response.ResultAs<List<string>>();
-/* ResultAs<T>() extension method uses Newtonsoft.Json serializer by default.To use your own serializer set JExtensions.Serializer = new YourCustomSerializerImpl();*/
+/* ResultAs<T>() extension method uses Newtonsoft.Json serializer by default.  
+To use your own serializer set JExtensions.Serializer = new YourCustomSerializerImpl();*/
 ```
 
 **POST**  
