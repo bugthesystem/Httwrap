@@ -9,7 +9,7 @@ namespace Httwrap.Tests
         {
             var config = new HttpConfiguration();
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
-
+            config.MapHttpAttributeRoutes();
             appBuilder.UseWebApi(config);
         }
     }

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Httwrap.Interface;
 using Microsoft.Owin.Hosting;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace Httwrap.Tests
 {
@@ -13,36 +17,81 @@ namespace Httwrap.Tests
         private IHttwrapClient _httwrapClient;
         private const string BaseAddress = "http://localhost:9000/";
 
-        protected override void FinalizeSetUp()
+        protected override async void FinalizeSetUp()
         {
-            //Demo purpose only.
-            JExtensions.Serializer = new JsonSerializerWrapper();
-
-            IHttwrapConfiguration configuration = new TestConfiguration(BaseAddress);
-            _httwrapClient = new HttwrapClient(configuration);
-
+            await ClearDb();
         }
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             _server = WebApp.Start<Startup>(url: BaseAddress);
+
+            //Demo purpose only.
+            JExtensions.Serializer = new JsonSerializerWrapper();
+
+            IHttwrapConfiguration configuration = new TestConfiguration(BaseAddress);
+            _httwrapClient = new HttwrapClient(configuration);
         }
 
         [Test]
-        public async void Get_test()
+        public async void Get_All_test()
         {
-            HttwrapResponse<List<string>> response = await _httwrapClient.GetAsync<List<string>>("api/values");
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _httwrapClient.PostAsync("api/products", product);
+
+            HttwrapResponse<IEnumerable<Product>> response = await _httwrapClient.GetAsync<IEnumerable<Product>>("api/products");
 
             response.Data.Should().NotBeNullOrEmpty();
-            response.Data.Count.Should().Be(2);
+            response.Data.Count().Should().Be(1);
+        }
+
+        [Test]
+        public async void Get_ById_test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _httwrapClient.PostAsync("api/products", product);
+
+            HttwrapResponse<Product> response = await _httwrapClient.GetAsync<Product>("api/products/1");
+
+            response.Data.Should().NotBeNull();
+        }
+
+        [Test]
+        public async void Post_test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            HttwrapResponse response = await _httwrapClient.PostAsync("api/products", product);
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+
+        [Test]
+        public async void Delete_test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _httwrapClient.PostAsync("api/products", product);
+
+            HttwrapResponse response = await _httwrapClient.DeleteAsync("api/products/1");
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
         }
 
         [TestFixtureTearDown]
-        protected override void FinalizeTearDown()
+        protected void TesTearDown()
         {
             if (_server != null)
                 _server.Dispose();
+        }
+
+        private async Task ClearDb()
+        {
+            HttwrapResponse clearResponse = await _httwrapClient.GetAsync("api/products?op=clear");
+            clearResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }
