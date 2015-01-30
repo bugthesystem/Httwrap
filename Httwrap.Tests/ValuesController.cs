@@ -3,7 +3,7 @@ using System.Web.Http;
 
 namespace Httwrap.Tests
 {
-    public class TestController : ApiController
+    public class ValuesController : ApiController
     {
         public IEnumerable<string> Get()
         {

@@ -7,6 +7,7 @@ namespace Httwrap.Interface
     public interface IHttwrapClient
     {
         Task<HttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null);
+        Task<HttwrapResponse<T>> GetAsync<T>(string path, Action<HttpStatusCode, string> errorHandler = null);
         Task<HttwrapResponse> PutAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null);
         Task<HttwrapResponse> PostAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null);
         Task<HttwrapResponse> DeleteAsync(string path, Action<HttpStatusCode, string> errorHandler = null);

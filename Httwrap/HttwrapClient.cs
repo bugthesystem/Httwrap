@@ -32,6 +32,11 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
         }
 
+        public async Task<HttwrapResponse<T>> GetAsync<T>(string path, Action<HttpStatusCode, string> errorHandler = null)
+        {
+            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler);
+        }
+
         public async Task<HttwrapResponse> PutAsync<T>(string path, T data,
             Action<HttpStatusCode, string> errorHandler = null)
         {
@@ -73,6 +78,24 @@ namespace Httwrap
             HandleIfErrorResponse(response.StatusCode, content, errorHandler ?? ((statusCode, responseBody) => { }));
 
             return new HttwrapResponse(response.StatusCode, content);
+        }
+
+        private async Task<HttwrapResponse<T>> RequestAsync<T>(HttpMethod method, string path, object body,
+            Action<HttpStatusCode, string> errorHandler = null)
+        {
+            var response =
+                await
+                    RequestInnerAsync(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+                        path, body);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            HandleIfErrorResponse(response.StatusCode, content, errorHandler ?? ((statusCode, responseBody) => { }));
+
+            return new HttwrapResponse<T>(response.StatusCode, content)
+            {
+                Data = _serializer.DeserializeObject<T>(content)
+            };
         }
 
         private async Task<HttpResponseMessage> RequestInnerAsync(TimeSpan? requestTimeout,

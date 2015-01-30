@@ -1,13 +1,16 @@
 using System.Web.Http;
 using Owin;
 
-public class Startup
+namespace Httwrap.Tests
 {
-    public void Configuration(IAppBuilder appBuilder)
+    public class Startup
     {
-        var config = new HttpConfiguration();
-        config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+        public void Configuration(IAppBuilder appBuilder)
+        {
+            var config = new HttpConfiguration();
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
 
-        appBuilder.UseWebApi(config);
+            appBuilder.UseWebApi(config);
+        }
     }
 }

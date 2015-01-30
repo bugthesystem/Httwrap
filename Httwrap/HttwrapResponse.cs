@@ -18,4 +18,14 @@ namespace Httwrap
             get { return StatusCode == HttpStatusCode.OK; }
         }
     }
+
+    public class HttwrapResponse<T> : HttwrapResponse
+    {
+        public T Data { get; set; }
+
+        public HttwrapResponse(HttpStatusCode statusCode, string body)
+            : base(statusCode, body)
+        {
+        }
+    }
 }

@@ -1,36 +1,48 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using FluentAssertions;
 using Httwrap.Interface;
-using Microsoft.Owin.Testing;
+using Microsoft.Owin.Hosting;
 using NUnit.Framework;
 
 namespace Httwrap.Tests
 {
     public class HttpwrapTests : TestBase
     {
-        private TestServer _server;
+        private IDisposable _server;
+        private IHttwrapClient _httwrapClient;
+        private const string BaseAddress = "http://localhost:9000/";
+
         protected override void FinalizeSetUp()
         {
             //Demo purpose only.
             JExtensions.Serializer = new JsonSerializerWrapper();
 
-            IHttwrapConfiguration configuration = new TestConfiguration("http://localapi/v1/");
-            IHttwrapClient restRequestClient = new HttwrapClient(configuration);
+            IHttwrapConfiguration configuration = new TestConfiguration(BaseAddress);
+            _httwrapClient = new HttwrapClient(configuration);
 
-            _server = TestServer.Create<Startup>();
+        }
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            _server = WebApp.Start<Startup>(url: BaseAddress);
         }
 
         [Test]
-        public void Get_test()
+        public async void Get_test()
         {
-            Assert.IsTrue(true);
+            HttwrapResponse<List<string>> response = await _httwrapClient.GetAsync<List<string>>("api/values");
+
+            response.Data.Should().NotBeNullOrEmpty();
+            response.Data.Count.Should().Be(2);
         }
 
         [TestFixtureTearDown]
         protected override void FinalizeTearDown()
         {
-            _server.Dispose();
+            if (_server != null)
+                _server.Dispose();
         }
     }
 }
