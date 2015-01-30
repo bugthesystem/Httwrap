@@ -12,44 +12,44 @@ PM> Install-Package Httwrap
   IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
-** GET **
+**GET**  
 ```csharp
 HttwrapResponse<List<string>> response = await _httwrap.GetAsync<List<string>>("api/values");
 ```
 
-** GET **
+**GET**  
 ```csharp
 HttwrapResponse response = await _httwrap.GetAsync("api/values");
 List<string> values = response.ResultAs<List<string>>();
 /* ResultAs<T>() extension method uses Newtonsoft.Json serializer by default.To use your own serializer set JExtensions.Serializer = new YourCustomSerializerImpl();*/
 ```
 
-** POST **
+**POST**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 HttwrapResponse response = await _httwrap.PostAsync<Product>("api/products",product);
 ```
 
-** PUT **
+**PUT**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 HttwrapResponse response = await _httwrap.PutAsync<Product>("api/products",product);
 ```
 
-** PATCH **
+**PATCH**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3, Id = 12};
 HttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products",product);
 ```
 
-** DELETE **
+**DELETE**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 HttwrapResponse response = await _httwrap.DeleteAsync<Product>("api/products/1");
 ```
 
 
-** Error Handler **
+**Error Handler**  
 ```csharp
 HttwrapResponse<List<string>> response = await _httwrap.GetAsync<List<string>>("api/values",  (statusCode, body) =>
 {
