@@ -4,9 +4,12 @@ General purpose HttpClient wrapper
 [![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)
 
 ## How to use  
+
+**Install**  
 ```cs
 PM> Install-Package Httwrap
 ```
+**Init**  
 ```csharp
   IHttwrapConfiguration configuration = new TestConfiguration("http://localhost:9000/");
   IHttwrapClient _httwrap = new HttwrapClient(configuration);
