@@ -14,7 +14,8 @@ PM> Install-Package Httwrap
 
 **GET**  
 ```csharp
-HttwrapResponse<List<string>> response = await _httwrap.GetAsync<List<string>>("api/values");
+HttwrapResponse<Product> response = await _httwrap.GetAsync<Product>("api/values/1");
+Dump(response.Data);
 ```
 
 **GET**  
@@ -29,24 +30,27 @@ To use your own serializer set JExtensions.Serializer = new YourCustomSerializer
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 HttwrapResponse response = await _httwrap.PostAsync<Product>("api/products",product);
+Dump(response.Success);
 ```
 
 **PUT**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
-HttwrapResponse response = await _httwrap.PutAsync<Product>("api/products",product);
+HttwrapResponse response = await _httwrap.PutAsync<Product>("api/products/1",product);
+Dump(response.Success);
 ```
 
 **PATCH**  
 ```csharp
-Product product = new Product{ Name= "Product A", Quantity = 3, Id = 12};
-HttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products",product);
+Product product = new Product{ Name= "Product A", Quantity = 3};
+HttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products/1",product);
+Dump(response.Success);
 ```
 
 **DELETE**  
 ```csharp
-Product product = new Product{ Name= "Product A", Quantity = 3 };
 HttwrapResponse response = await _httwrap.DeleteAsync<Product>("api/products/1");
+Dump(response.Success);
 ```
 
 
