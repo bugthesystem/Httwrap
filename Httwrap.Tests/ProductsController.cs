@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace Httwrap.Tests
 {
-    //TESTING: http://www.asp.net/web-api/overview/older-versions/creating-a-web-api-that-supports-crud-operations
+    //REFERENCE: http://www.asp.net/web-api/overview/older-versions/creating-a-web-api-that-supports-crud-operations
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
