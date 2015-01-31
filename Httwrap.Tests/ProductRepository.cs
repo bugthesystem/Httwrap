@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Httwrap.Tests
 {
+    //REFERENCE: http://www.asp.net/web-api/overview/older-versions/creating-a-web-api-that-supports-crud-operations
     public class ProductRepository : IProductRepository
     {
         private readonly List<Product> _products = new List<Product>();
