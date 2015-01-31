@@ -91,7 +91,7 @@ namespace Httwrap.Tests
         private async Task ClearDb()
         {
             HttwrapResponse clearResponse = await _httwrapClient.GetAsync("api/products?op=clear");
-            clearResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            clearResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }
