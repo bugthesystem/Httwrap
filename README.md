@@ -62,7 +62,8 @@ Dump(response.StatusCode);
 
 **Error Handler**  
 ```csharp
-HttwrapResponse<List<string>> response = await _httwrap.GetAsync<List<string>>("api/values",  (statusCode, body) =>
+HttwrapResponse<List<Product>> response = 
+await _httwrap.GetAsync<List<Product>>("api/products",  (statusCode, body) =>
 {
   _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);
 });
