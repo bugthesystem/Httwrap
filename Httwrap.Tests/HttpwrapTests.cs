@@ -27,9 +27,6 @@ namespace Httwrap.Tests
         {
             _server = WebApp.Start<Startup>(url: BaseAddress);
 
-            //Demo purpose only.
-            JExtensions.Serializer = new JsonSerializerWrapper();
-
             IHttwrapConfiguration configuration = new TestConfiguration(BaseAddress);
             _httwrapClient = new HttwrapClient(configuration);
         }
