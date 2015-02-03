@@ -93,7 +93,6 @@
     <Compile Include="Product.cs" />
     <Compile Include="ProductRepository.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="TestConfiguration.cs" />
     <Compile Include="HttpwrapTests.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />

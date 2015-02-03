@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Httwrap.Interface;
-using Microsoft.Owin.Hosting;
+using System.Linq;
 using NUnit.Framework;
+using FluentAssertions;
 using Ploeh.AutoFixture;
+using Httwrap.Interface;
+using System.Threading.Tasks;
+using Microsoft.Owin.Hosting;
+using System.Collections.Generic;
 
 namespace Httwrap.Tests
 {
     public class HttpwrapTests : TestBase
     {
         private IDisposable _server;
-        private IHttwrapClient _httwrapClient;
+        private IHttwrapClient _client;
         private const string BaseAddress = "http://localhost:9000/";
 
         protected override async void FinalizeSetUp()
@@ -27,17 +27,17 @@ namespace Httwrap.Tests
         {
             _server = WebApp.Start<Startup>(url: BaseAddress);
 
-            IHttwrapConfiguration configuration = new TestConfiguration(BaseAddress);
-            _httwrapClient = new HttwrapClient(configuration);
+            IHttwrapConfiguration configuration = new HttwrapConfiguration(BaseAddress);
+            _client = new HttwrapClient(configuration);
         }
 
         [Test]
         public async void Get_All_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
-            await _httwrapClient.PostAsync("api/products", product);
+            await _client.PostAsync("api/products", product);
 
-            HttwrapResponse<IEnumerable<Product>> response = await _httwrapClient.GetAsync<IEnumerable<Product>>("api/products");
+            IHttwrapResponse<IEnumerable<Product>> response = await _client.GetAsync<IEnumerable<Product>>("api/products");
 
             response.Data.Should().NotBeNullOrEmpty();
             response.Data.Count().Should().Be(1);
@@ -47,9 +47,9 @@ namespace Httwrap.Tests
         public async void Get_ById_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
-            await _httwrapClient.PostAsync("api/products", product);
+            await _client.PostAsync("api/products", product);
 
-            HttwrapResponse<Product> response = await _httwrapClient.GetAsync<Product>("api/products/1");
+            IHttwrapResponse<Product> response = await _client.GetAsync<Product>("api/products/1");
 
             response.Data.Should().NotBeNull();
         }
@@ -58,7 +58,7 @@ namespace Httwrap.Tests
         public async void Post_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
-            HttwrapResponse response = await _httwrapClient.PostAsync("api/products", product);
+            IHttwrapResponse response = await _client.PostAsync("api/products", product);
 
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -69,9 +69,9 @@ namespace Httwrap.Tests
         public async void Delete_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
-            await _httwrapClient.PostAsync("api/products", product);
+            await _client.PostAsync("api/products", product);
 
-            HttwrapResponse response = await _httwrapClient.DeleteAsync("api/products/1");
+            IHttwrapResponse response = await _client.DeleteAsync("api/products/1");
 
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -87,7 +87,7 @@ namespace Httwrap.Tests
 
         private async Task ClearDb()
         {
-            HttwrapResponse clearResponse = await _httwrapClient.GetAsync("api/products?op=clear");
+            IHttwrapResponse clearResponse = await _client.GetAsync("api/products?op=clear");
             clearResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }

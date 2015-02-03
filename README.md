@@ -11,20 +11,20 @@ PM> Install-Package Httwrap
 ```
 **Init**  
 ```csharp
-  IHttwrapConfiguration configuration = new TestConfiguration("http://localhost:9000/");
+  IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/");
   IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
 **GET**  
 ```csharp
-HttwrapResponse<Product> response = await _httwrap.GetAsync<Product>("api/products/1");
+IHttwrapResponse<Product> response = await _httwrap.GetAsync<Product>("api/products/1");
 Dump(response.Data);
 Dump(response.StatusCode);
 ```
 
 **GET**  
 ```csharp
-HttwrapResponse response = await _httwrap.GetAsync("api/products");
+IHttwrapResponse response = await _httwrap.GetAsync("api/products");
 List<Product> values = response.ResultAs<List<Product>>();
 Dump(response.StatusCode);
 
@@ -35,34 +35,34 @@ To use your own serializer set JExtensions.Serializer = new YourCustomSerializer
 **POST**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
-HttwrapResponse response = await _httwrap.PostAsync<Product>("api/products",product);
+IHttwrapResponse response = await _httwrap.PostAsync<Product>("api/products",product);
 Dump(response.StatusCode);
 ```
 
 **PUT**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
-HttwrapResponse response = await _httwrap.PutAsync<Product>("api/products/1",product);
+IHttwrapResponse response = await _httwrap.PutAsync<Product>("api/products/1",product);
 Dump(response.StatusCode);
 ```
 
 **PATCH**  
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3};
-HttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products/1",product);
+IHttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products/1",product);
 Dump(response.StatusCode);
 ```
 
 **DELETE**  
 ```csharp
-HttwrapResponse response = await _httwrap.DeleteAsync<Product>("api/products/1");
+IHttwrapResponse response = await _httwrap.DeleteAsync<Product>("api/products/1");
 Dump(response.StatusCode);
 ```
 
 
 **Error Handler**  
 ```csharp
-HttwrapResponse<List<Product>> response = 
+IHttwrapResponse<List<Product>> response = 
 await _httwrap.GetAsync<List<Product>>("api/products",  (statusCode, body) =>
 {
   _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);

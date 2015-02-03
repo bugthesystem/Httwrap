@@ -1,8 +1,11 @@
-﻿namespace Httwrap.Interface
+﻿using System.Net.Http;
+
+namespace Httwrap.Interface
 {
     public interface IHttwrapConfiguration
     {
         string BasePath { get; }
         ISerializer Serializer { get; }
+        HttpClient GetHttpClient();
     }
 }
