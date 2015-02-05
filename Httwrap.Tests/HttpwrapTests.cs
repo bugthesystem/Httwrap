@@ -55,6 +55,17 @@ namespace Httwrap.Tests
         }
 
         [Test]
+        public async void Get_ById_ReadAs_test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _client.PostAsync("api/products", product);
+
+            IHttwrapResponse response = await _client.GetAsync("api/products/1");
+            Product result = response.ReadAs<Product>();
+            result.Should().NotBeNull();
+        }
+
+        [Test]
         public async void Post_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();

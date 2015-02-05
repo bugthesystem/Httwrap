@@ -18,7 +18,7 @@ namespace Httwrap
             return JsonConvert.SerializeObject(@object);
         }
 
-        public static T ReadAs<T>(this HttwrapResponse response)
+        public static T ReadAs<T>(this IHttwrapResponse response)
         {
             return JsonConvert.DeserializeObject<T>(response.Body);
         }
