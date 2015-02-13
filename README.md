@@ -63,10 +63,10 @@ Dump(response.StatusCode);
 **Error Handler**  
 ```csharp
 IHttwrapResponse<List<Product>> response = 
-await _httwrap.GetAsync<List<Product>>("api/products",  (statusCode, body) =>
-{
-  _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);
-});
+      await _httwrap.GetAsync<List<Product>>("api/products", (statusCode, body) =>
+      {
+        _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);
+      });
 ```
 
 ##Bugs
