@@ -55,7 +55,7 @@ Dump(response.StatusCode);
 
 **DELETE**  
 ```csharp
-IHttwrapResponse response = await _httwrap.DeleteAsync<Product>("api/products/1");
+IHttwrapResponse response = await _httwrap.DeleteAsync("api/products/1");
 Dump(response.StatusCode);
 ```
 
