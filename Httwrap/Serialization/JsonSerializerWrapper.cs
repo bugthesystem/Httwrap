@@ -1,16 +1,16 @@
 ﻿using Httwrap.Interface;
 using Newtonsoft.Json;
 
-namespace Httwrap
+namespace Httwrap.Serialization
 {
     internal class JsonSerializerWrapper : ISerializer
     {
-        public T DeserializeObject<T>(string json)
+        public T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public string SerializeObject<T>(T value)
+        public string Serialize<T>(T value)
         {
             return JsonConvert.SerializeObject(value);
         }

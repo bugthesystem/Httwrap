@@ -84,7 +84,7 @@ namespace Httwrap
 
             return new HttwrapResponse<T>(response)
             {
-                Data = _configuration.Serializer.DeserializeObject<T>(content)
+                Data = _configuration.Serializer.Deserialize<T>(content)
             };
         }
 

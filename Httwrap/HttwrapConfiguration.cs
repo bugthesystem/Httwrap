@@ -1,5 +1,6 @@
 using System.Net.Http;
 using Httwrap.Interface;
+using Httwrap.Serialization;
 
 namespace Httwrap
 {

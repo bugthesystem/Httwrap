@@ -1,17 +1,17 @@
 ﻿using Httwrap.Interface;
+using Httwrap.Serialization;
 using Newtonsoft.Json;
 
 namespace Httwrap
 {
     public static class JExtensions
     {
-        private static ISerializer serializer;
-
-        public static ISerializer Serializer
+        static JExtensions()
         {
-            get { return serializer ?? (serializer = new JsonSerializerWrapper()); }
-            set { serializer = value; }
+            Serializer = new JsonSerializerWrapper();
         }
+
+        public static ISerializer Serializer { get; set; }
 
         public static string ToJson(this object @object)
         {

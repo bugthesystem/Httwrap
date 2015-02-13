@@ -19,7 +19,7 @@ namespace Httwrap.Tests
 
         protected override async void FinalizeSetUp()
         {
-            await ClearDb();
+            await ClearApiCache();
         }
 
         [TestFixtureSetUp]
@@ -96,7 +96,7 @@ namespace Httwrap.Tests
                 _server.Dispose();
         }
 
-        private async Task ClearDb()
+        private async Task ClearApiCache()
         {
             IHttwrapResponse clearResponse = await _client.GetAsync("api/products?op=clear");
             clearResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);

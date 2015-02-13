@@ -31,7 +31,7 @@ namespace Httwrap
 
         public HttpContent GetContent()
         {
-            var serializedObject = SerializerWrapper.SerializeObject(Value);
+            var serializedObject = SerializerWrapper.Serialize(Value);
             return new StringContent(serializedObject, Encoding.UTF8, JsonMimeType);
         }
     }
