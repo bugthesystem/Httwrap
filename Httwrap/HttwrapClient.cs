@@ -37,7 +37,7 @@ namespace Httwrap
 
         public async Task<IHttwrapResponse> PutAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
         {
-            return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler);
+            return await RequestAsync(HttpMethod.Put, path, data, errorHandler);
         }
 
         public async Task<IHttwrapResponse> PostAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
