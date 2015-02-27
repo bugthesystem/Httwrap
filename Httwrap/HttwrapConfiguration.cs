@@ -1,4 +1,5 @@
 using System.Net.Http;
+using Httwrap.Auth;
 using Httwrap.Interface;
 using Httwrap.Serialization;
 
@@ -10,15 +11,17 @@ namespace Httwrap
         private ISerializer _serializer;
 
         public HttwrapConfiguration(string basePath)
+            : this(basePath, httpHandler: null)
         {
-            Check.NotNullOrEmpty(basePath, "The basePath may not be null or empty.");
-            BasePath = basePath;
+
         }
 
         public HttwrapConfiguration(string basePath, HttpMessageHandler httpHandler = null)
-            : this(basePath)
         {
+            Check.NotNullOrEmpty(basePath, "The basePath may not be null or empty.");
+            BasePath = basePath;
             _httpHandler = httpHandler;
+            Credentials = new AnonymousCredentials();
         }
 
         public string BasePath { get; private set; }
@@ -31,9 +34,11 @@ namespace Httwrap
 
         public HttpClient GetHttpClient()
         {
-            var client = _httpHandler != null ? new HttpClient(_httpHandler) : new HttpClient();
+            var client = Credentials.BuildHttpClient(_httpHandler);
 
             return client;
         }
+
+        public Credentials Credentials { get; set; }
     }
 }

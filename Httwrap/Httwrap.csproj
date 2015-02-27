@@ -45,7 +45,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\AnonymousCredentials.cs" />
+    <Compile Include="Auth\BasicAuthCredentials.cs" />
     <Compile Include="Check.cs" />
+    <Compile Include="Auth\Credentials.cs" />
     <Compile Include="HttwrapClient.cs" />
     <Compile Include="HttwrapConfiguration.cs" />
     <Compile Include="HttwrapException.cs" />

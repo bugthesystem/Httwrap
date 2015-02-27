@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Httwrap.Auth;
 
 namespace Httwrap.Interface
 {
@@ -7,5 +8,6 @@ namespace Httwrap.Interface
         string BasePath { get; }
         ISerializer Serializer { get; }
         HttpClient GetHttpClient();
+        Credentials Credentials { get; set; }
     }
 }
