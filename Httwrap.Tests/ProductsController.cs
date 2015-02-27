@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using System.Collections.Generic;
 
 namespace Httwrap.Tests
 {
@@ -13,11 +13,13 @@ namespace Httwrap.Tests
     {
         static readonly IProductRepository Repository = new ProductRepository();
 
+        [HttpGet]
         public IEnumerable<Product> Get()
         {
             return Repository.GetAll();
         }
 
+        [HttpGet]
         public Product Get(int id)
         {
             Product item = Repository.Get(id);
@@ -28,12 +30,14 @@ namespace Httwrap.Tests
             return item;
         }
 
+        [HttpGet]
         public IEnumerable<Product> GetProductsByCategory(string category)
         {
             return Repository.GetAll().Where(
                 p => string.Equals(p.Category, category, StringComparison.OrdinalIgnoreCase));
         }
 
+        [HttpPost]
         public HttpResponseMessage PostProduct(Product item)
         {
             item = Repository.Add(item);
@@ -45,6 +49,7 @@ namespace Httwrap.Tests
 
         }
 
+        [HttpPut]
         public void PutProduct(int id, Product product)
         {
             product.Id = id;
@@ -61,6 +66,7 @@ namespace Httwrap.Tests
         }
 
 
+        [HttpDelete]
         public void DeleteProduct(int id)
         {
             Product item = Repository.Get(id);

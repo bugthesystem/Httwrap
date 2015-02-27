@@ -75,6 +75,27 @@ namespace Httwrap.Tests
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
+        [Test]
+        public async void Put_test()
+        {
+            const string PUT_TEST_PRODUCT_NAME = "Put Test Product";
+
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _client.PostAsync("api/products", product);
+
+            product.Name = PUT_TEST_PRODUCT_NAME;
+            IHttwrapResponse putResponse = await _client.PutAsync("api/products/1", product);
+
+            IHttwrapResponse<Product> getResponse = await _client.GetAsync<Product>("api/products/1");
+
+            putResponse.Should().NotBeNull();
+            putResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+            getResponse.Should().NotBeNull();
+            getResponse.Data.Should().NotBeNull();
+            getResponse.Data.Name.ShouldBeEquivalentTo(PUT_TEST_PRODUCT_NAME);
+        }
+
 
         [Test]
         public async void Delete_test()
