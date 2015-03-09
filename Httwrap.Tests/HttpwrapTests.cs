@@ -8,6 +8,7 @@ using Httwrap.Interface;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 using System.Collections.Generic;
+using Httwrap.Auth;
 
 namespace Httwrap.Tests
 {
@@ -108,6 +109,24 @@ namespace Httwrap.Tests
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
+        }
+
+        [Test]
+        public void BasicCredentials_must_be_set_auth_header_Test()
+        {
+            //Headers is internal property. It exposed via InternalsVisibleTo attribute for testing.
+            var client = new HttwrapClient(new HttwrapConfiguration(BaseAddress)
+            {
+                Credentials = new BasicAuthCredentials("user", "s3cr3t")
+            });
+
+            IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers = client.Headers;
+            headers.Should().NotBeNullOrEmpty();
+
+            var authHeader = headers.FirstOrDefault(pair => pair.Key == "Authorization");
+
+            authHeader.Should().NotBeNull();
+            authHeader.Value.First().Should().Contain("Basic");
         }
 
         [TestFixtureTearDown]

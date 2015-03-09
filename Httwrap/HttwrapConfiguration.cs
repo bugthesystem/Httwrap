@@ -1,5 +1,5 @@
-using System.Net.Http;
 using Httwrap.Auth;
+using System.Net.Http;
 using Httwrap.Interface;
 using Httwrap.Serialization;
 
@@ -21,24 +21,23 @@ namespace Httwrap
             Check.NotNullOrEmpty(basePath, "The basePath may not be null or empty.");
             BasePath = basePath;
             _httpHandler = httpHandler;
-            Credentials = new AnonymousCredentials();
         }
 
         public string BasePath { get; private set; }
+        public Credentials Credentials { get; set; }
 
         public ISerializer Serializer
         {
-            get { return _serializer ?? (_serializer = new JsonSerializerWrapper()); }
+            get { return _serializer ?? (_serializer = new NewtonsoftJsonSerializer()); }
             set { _serializer = value; }
         }
 
         public HttpClient GetHttpClient()
         {
+            Credentials = Credentials ?? new AnonymousCredentials();
             var client = Credentials.BuildHttpClient(_httpHandler);
 
             return client;
         }
-
-        public Credentials Credentials { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Httwrap.Interface;
 using Httwrap.Serialization;
-using Newtonsoft.Json;
 
 namespace Httwrap
 {
@@ -8,19 +7,19 @@ namespace Httwrap
     {
         static JExtensions()
         {
-            Serializer = new JsonSerializerWrapper();
+            Serializer = new NewtonsoftJsonSerializer();
         }
 
         public static ISerializer Serializer { get; set; }
 
         public static string ToJson(this object @object)
         {
-            return JsonConvert.SerializeObject(@object);
+            return Serializer.Serialize(@object);
         }
 
         public static T ReadAs<T>(this IHttwrapResponse response)
         {
-            return JsonConvert.DeserializeObject<T>(response.Body);
+            return Serializer.Deserialize<T>(response.Body);
         }
     }
 }

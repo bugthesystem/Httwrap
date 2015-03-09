@@ -59,7 +59,7 @@
     <Compile Include="Interface\ISerializer.cs" />
     <Compile Include="IRequestContent.cs" />
     <Compile Include="JsonRequestContent.cs" />
-    <Compile Include="Serialization\JsonSerializerWrapper.cs" />
+    <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
     <Compile Include="JExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

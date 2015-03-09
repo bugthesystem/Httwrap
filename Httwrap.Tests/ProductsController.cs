@@ -8,7 +8,6 @@ using System.Collections.Generic;
 namespace Httwrap.Tests
 {
     //REFERENCE: http://www.asp.net/web-api/overview/older-versions/creating-a-web-api-that-supports-crud-operations
-    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         static readonly IProductRepository Repository = new ProductRepository();

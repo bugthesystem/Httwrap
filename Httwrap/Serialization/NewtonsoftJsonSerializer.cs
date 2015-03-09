@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Httwrap.Serialization
 {
-    internal class JsonSerializerWrapper : ISerializer
+    internal class NewtonsoftJsonSerializer : ISerializer
     {
         public T Deserialize<T>(string json)
         {
