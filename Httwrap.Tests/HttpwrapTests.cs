@@ -112,7 +112,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public void BasicCredentials_must_be_set_auth_header_Test()
+        public void BasicCredentials_should_set_auth_header_Test()
         {
             //Headers is internal property. It exposed via InternalsVisibleTo attribute for testing.
             var client = new HttwrapClient(new HttwrapConfiguration(BaseAddress)
