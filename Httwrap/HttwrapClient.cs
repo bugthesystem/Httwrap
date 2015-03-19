@@ -12,7 +12,6 @@ namespace Httwrap
     {
         private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
-        private readonly HttpClient _client;
 
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
@@ -25,12 +24,6 @@ namespace Httwrap
         public HttwrapClient(IHttwrapConfiguration configuration)
         {
             _configuration = configuration;
-            _client = _configuration.GetHttpClient();
-        }
-
-        internal IEnumerable<KeyValuePair<string, IEnumerable<string>>> Headers
-        {
-            get { return _client.DefaultRequestHeaders; }
         }
 
         public async Task<IHttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
@@ -102,13 +95,14 @@ namespace Httwrap
         {
             try
             {
+                var client = _configuration.GetHttpClient();
                 if (requestTimeout.HasValue)
                 {
-                    _client.Timeout = requestTimeout.Value;
+                    client.Timeout = requestTimeout.Value;
                 }
 
                 var request = PrepareRequest(method, body, path);
-                return await _client.SendAsync(request, completionOption, cancellationToken);
+                return await client.SendAsync(request, completionOption, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -152,7 +146,7 @@ namespace Httwrap
 
         public void Dispose()
         {
-            using (_client) { }
+
         }
     }
 }

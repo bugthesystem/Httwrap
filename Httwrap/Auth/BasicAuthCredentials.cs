@@ -20,7 +20,7 @@ namespace Httwrap.Auth
             _isTls = isTls;
         }
 
-        public override HttpClient BuildHttpClient(HttpMessageHandler httpHandler)
+        public override HttpClient BuildHttpClient(HttpMessageHandler httpHandler = null)
         {
             var httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 

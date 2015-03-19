@@ -114,16 +114,11 @@ namespace Httwrap.Tests
         [Test]
         public void BasicCredentials_should_set_auth_header_Test()
         {
-            //Headers is internal property. It exposed via InternalsVisibleTo attribute for testing.
-            var client = new HttwrapClient(new HttwrapConfiguration(BaseAddress)
-            {
-                Credentials = new BasicAuthCredentials("user", "s3cr3t")
-            });
+            BasicAuthCredentials credentials = new BasicAuthCredentials("user", "s3cr3t");
+            var client = credentials.BuildHttpClient();
+            client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
 
-            IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers = client.Headers;
-            headers.Should().NotBeNullOrEmpty();
-
-            var authHeader = headers.FirstOrDefault(pair => pair.Key == "Authorization");
+            var authHeader = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
 
             authHeader.Should().NotBeNull();
             authHeader.Value.First().Should().Contain("Basic");
