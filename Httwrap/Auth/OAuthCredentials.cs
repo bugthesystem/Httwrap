@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Httwrap.Auth
 {
@@ -22,7 +19,7 @@ namespace Httwrap.Auth
         {
             HttpClient httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", string.Format("Bearer {0}", _token));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
             return httpClient;
         }
