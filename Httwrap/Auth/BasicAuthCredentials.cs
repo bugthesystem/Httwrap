@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Httwrap.Auth
@@ -25,7 +26,8 @@ namespace Httwrap.Auth
             var httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 
             string authString = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _username, _password)));
-            httpClient.DefaultRequestHeaders.Add("Authorization", string.Format("Basic {0}", authString));
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
 
             return httpClient;
         }
