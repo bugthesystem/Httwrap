@@ -139,6 +139,17 @@ namespace Httwrap.Tests
             var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
             header.Should().NotBeNull();
             header.Value.First().Should().Contain("Bearer");
+        } 
+        [Test]
+        public void OAuthCredentials_with_username_password_should_set_auth_header_Test()
+        {
+            OAuthCredentials credentials = new OAuthCredentials("api", "oguz", "dem");
+            var client = credentials.BuildHttpClient();
+            client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
+
+            var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
+            header.Should().NotBeNull();
+            header.Value.First().Should().Contain("Bearer");
         }
 
         [TestFixtureTearDown]
