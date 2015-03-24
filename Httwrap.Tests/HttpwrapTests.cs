@@ -76,6 +76,7 @@ namespace Httwrap.Tests
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
+
         [Test]
         public async void Put_test()
         {
@@ -123,7 +124,6 @@ namespace Httwrap.Tests
             authHeader.Should().NotBeNull();
             authHeader.Value.First().Should().Contain("Basic");
         }
-
         [Test]
         public void OAuthCredentials_should_set_auth_header_Test()
         {
@@ -135,9 +135,19 @@ namespace Httwrap.Tests
             header.Should().NotBeNull();
             header.Value.First().Should().Contain("Bearer");
         }
+        [Test]
+        public void OAuth_with_username_password_should_set_auth_header_Test()
+        {
+            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "api/authentication/token");
+            var client = credentials.BuildHttpClient();
+            client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
+            var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
+            header.Should().NotBeNull();
+            header.Value.First().Should().Contain("Bearer");
 
+            }
         [TestFixtureTearDown]
-        protected void TesTearDown()
+        protected void TestTearDown()
         {
             if (_server != null)
                 _server.Dispose();
