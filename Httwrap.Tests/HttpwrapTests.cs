@@ -77,6 +77,12 @@ namespace Httwrap.Tests
         }
 
         [Test]
+        public async void postex()
+        {
+            OAuthCredentials oAuth = new OAuthCredentials("ED7D1B62", "admin");
+            oAuth.BuildHttpClient();
+        }
+        [Test]
         public async void Put_test()
         {
             const string PUT_TEST_PRODUCT_NAME = "Put Test Product";
@@ -123,7 +129,6 @@ namespace Httwrap.Tests
             authHeader.Should().NotBeNull();
             authHeader.Value.First().Should().Contain("Basic");
         }
-
         [Test]
         public void OAuthCredentials_should_set_auth_header_Test()
         {
