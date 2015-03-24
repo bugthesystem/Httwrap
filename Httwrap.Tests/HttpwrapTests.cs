@@ -76,12 +76,7 @@ namespace Httwrap.Tests
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
-        [Test]
-        public async void postex()
-        {
-            OAuthCredentials oAuth = new OAuthCredentials("ED7D1B62", "admin");
-            oAuth.BuildHttpClient();
-        }
+
         [Test]
         public async void Put_test()
         {
@@ -139,21 +134,20 @@ namespace Httwrap.Tests
             var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
             header.Should().NotBeNull();
             header.Value.First().Should().Contain("Bearer");
-        } 
+        }
         [Test]
-        public void OAuthCredentials_with_username_password_should_set_auth_header_Test()
+        public void OAuth_with_username_password_should_set_auth_header_Test()
         {
-            OAuthCredentials credentials = new OAuthCredentials("api", "oguz", "dem");
+            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "api/authentication/token");
             var client = credentials.BuildHttpClient();
             client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
-
             var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
             header.Should().NotBeNull();
             header.Value.First().Should().Contain("Bearer");
-        }
 
+            }
         [TestFixtureTearDown]
-        protected void TesTearDown()
+        protected void TestTearDown()
         {
             if (_server != null)
                 _server.Dispose();

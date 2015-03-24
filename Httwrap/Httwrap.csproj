@@ -55,11 +55,11 @@
     <Compile Include="HttwrapConfiguration.cs" />
     <Compile Include="HttwrapException.cs" />
     <Compile Include="HttwrapResponse.cs" />
-    <Compile Include="IHttwrapResponse.cs" />
+    <Compile Include="Interface\IHttwrapResponse.cs" />
     <Compile Include="Interface\IHttwrapClient.cs" />
     <Compile Include="Interface\IHttwrapConfiguration.cs" />
     <Compile Include="Interface\ISerializer.cs" />
-    <Compile Include="IRequestContent.cs" />
+    <Compile Include="Interface\IRequestContent.cs" />
     <Compile Include="JsonRequestContent.cs" />
     <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
     <Compile Include="JExtensions.cs" />
@@ -94,6 +94,7 @@
       <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\portable-net40+sl5+win8+wp8+wpa81\System.Threading.Tasks.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

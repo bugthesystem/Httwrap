@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -37,17 +36,17 @@ namespace Httwrap.Auth
         {
             var httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 
-            if (String.IsNullOrEmpty(_token))
+            if (string.IsNullOrEmpty(_token))
             {
-                FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
+                var content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     {"username", _username},
                     {"password", _password},
                     {"grant_type", _grantType}
                 });
 
-                HttpResponseMessage response = httpClient.PostAsync(_requestEndpoint, content).Result;
-                Token token = new HttwrapResponse(response).ReadAs<Token>();
+                var response = httpClient.PostAsync(_requestEndpoint, content).Result;
+                var token = new HttwrapResponse(response).ReadAs<Token>();
                 _token = token.AccessToken;
 
             }
