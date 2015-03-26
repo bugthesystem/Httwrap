@@ -69,6 +69,34 @@ IHttwrapResponse<List<Product>> response =
       });
 ```
 
+**Basic Credentials**
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new BasicAuthCredentials("user", "s3cr3t")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
+```
+
+**OAuth Credentials**
+_**Use token**_
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new OAuthCredentials("token")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
+```
+_**Use Username / password to get token from ``edpoint``**_
+
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "/token")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
+```
+
 ##Bugs
 If you encounter a bug, performance issue, or malfunction, please add an [Issue](https://github.com/ziyasal/Httwrap/issues) with steps on how to reproduce the problem.
 
