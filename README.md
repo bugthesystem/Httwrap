@@ -87,7 +87,7 @@ IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost
 };
 IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
-_**Use Username / password to get token from ```edpoint````**_
+_**Use Username / password to get token from ```edpoint```**_
 
 ```csharp
 IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
