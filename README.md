@@ -1,7 +1,7 @@
 # Httwrap
 General purpose HttpClient wrapper
 
-[![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)
+[![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)[![Coverage Status](https://coveralls.io/repos/ziyasal/Httwrap/badge.svg)](https://coveralls.io/r/ziyasal/Httwrap)
 
 ## How to use  
 
