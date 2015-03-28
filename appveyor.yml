@@ -2,7 +2,9 @@ configuration: Release
 branches:
   only:
     - master
-
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: nnLizSCRAP0VMS3MwoIOJqEW7NXo9vNeM
 before_build:
   - nuget restore Httwrap.sln
 
@@ -10,6 +12,10 @@ build:
   project: Httwrap.sln       
   verbosity: minimal
 
-test:
-  assemblies:
-    - '**\*.Tests.dll'
+#test:
+#  assemblies:
+#    - '**\*.Tests.dll'
+test_script:
+- ps: >-
+    .\src\packages\OpenCover.4.5.3522\OpenCover.Console.exe -register:user -target:nunit-console.exe -register:user "-targetargs:""Httwrap.Tests\bin\$env:CONFIGURATION\Httwrap.Tests.dll"" /noshadow" -filter:"+[Httwrap*]*" -output:opencoverCoverage.xml
+    .\src\packages\coveralls.net.0.5.0\csmacnz.Coveralls.exe --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
