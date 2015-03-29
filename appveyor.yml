@@ -19,4 +19,4 @@ test_script:
 - ps: >-
     .\packages\OpenCover.4.5.3522\OpenCover.Console.exe -register:user -target:.\packages\NUnit.Runners.2.6.4\tools\nunit-console.exe -register:user "-targetargs:""Httwrap.Tests\bin\$env:CONFIGURATION\Httwrap.Tests.dll"" /framework:net-4.5 /noshadow" -filter:"+[Httwrap*]*" -output:opencoverCoverage.xml
     
-    .\packages\coveralls.net.0.5.0\csmacnz.Coveralls.exe --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+    .\packages\coveralls.net.0.5.0\csmacnz.Coveralls.exe -i ./opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
