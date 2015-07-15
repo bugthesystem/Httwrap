@@ -7,7 +7,7 @@ namespace Httwrap.Interface
     {
         string BasePath { get; }
         ISerializer Serializer { get; }
-        HttpClient GetHttpClient();
         Credentials Credentials { get; set; }
+        HttpClient GetHttpClient();
     }
 }

@@ -42,7 +42,7 @@ namespace Httwrap.Tests
             {
                 throw new ArgumentNullException("item");
             }
-            int index = _products.FindIndex(p => p.Id == item.Id);
+            var index = _products.FindIndex(p => p.Id == item.Id);
             if (index == -1)
             {
                 return false;

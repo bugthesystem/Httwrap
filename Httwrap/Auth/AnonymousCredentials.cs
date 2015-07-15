@@ -4,7 +4,7 @@ namespace Httwrap.Auth
 {
     public class AnonymousCredentials : Credentials
     {
-        public override HttpClient BuildHttpClient(HttpMessageHandler httpHandler)
+        public override HttpClient BuildHttpClient(HttpMessageHandler httpHandler = null)
         {
             return httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
         }

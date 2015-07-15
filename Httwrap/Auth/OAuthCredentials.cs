@@ -6,12 +6,12 @@ namespace Httwrap.Auth
 {
     public class OAuthCredentials : Credentials
     {
-        private string _token;
-        private readonly string _username;
-        private readonly string _password;
         private readonly string _grantType;
-        private readonly string _requestEndpoint;
         private readonly bool _isTls;
+        private readonly string _password;
+        private readonly string _requestEndpoint;
+        private readonly string _username;
+        private string _token;
 
         public OAuthCredentials(string token, bool isTls = false)
         {
@@ -29,11 +29,11 @@ namespace Httwrap.Auth
             _password = password;
             _requestEndpoint = requestEndpoint;
             _grantType = "password";
-
         }
 
         public override HttpClient BuildHttpClient(HttpMessageHandler httpHandler = null)
         {
+            //TODO: Refresh Token :)
             var httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 
             if (string.IsNullOrEmpty(_token))
@@ -48,7 +48,6 @@ namespace Httwrap.Auth
                 var response = httpClient.PostAsync(_requestEndpoint, content).Result;
                 var token = new HttwrapResponse(response).ReadAs<Token>();
                 _token = token.AccessToken;
-
             }
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);

@@ -7,9 +7,9 @@ namespace Httwrap.Auth
 {
     public class BasicAuthCredentials : Credentials
     {
-        private readonly string _username;
-        private readonly string _password;
         private readonly bool _isTls;
+        private readonly string _password;
+        private readonly string _username;
 
         public BasicAuthCredentials(string username, string password, bool isTls = false)
         {
@@ -25,7 +25,8 @@ namespace Httwrap.Auth
         {
             var httpClient = httpHandler != null ? new HttpClient(httpHandler) : new HttpClient();
 
-            string authString = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _username, _password)));
+            var authString =
+                Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _username, _password)));
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
 

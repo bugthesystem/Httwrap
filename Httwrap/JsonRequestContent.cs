@@ -26,8 +26,8 @@ namespace Httwrap
             SerializerWrapper = serializerWrapper;
         }
 
-        private object Value { get; set; }
-        private ISerializer SerializerWrapper { get; set; }
+        private object Value { get; }
+        private ISerializer SerializerWrapper { get; }
 
         public HttpContent GetContent()
         {

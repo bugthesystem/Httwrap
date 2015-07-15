@@ -3,14 +3,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Httwrap.Interface;
 
 namespace Httwrap
 {
     public sealed class HttwrapClient : IHttwrapClient, IDisposable
     {
-        private const string UserAgent = "Httwrap";
+        private const string USER_AGENT = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
 
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
@@ -21,9 +20,20 @@ namespace Httwrap
             }
         };
 
-        public HttwrapClient(IHttwrapConfiguration configuration)
+        private readonly IQueryStringSerializer _queryStringSerializer;
+
+        public HttwrapClient(IHttwrapConfiguration configuration) : this(configuration, new QueryStringSerializer())
+        {
+        }
+
+        internal HttwrapClient(IHttwrapConfiguration configuration, IQueryStringSerializer queryStringSerializer)
         {
             _configuration = configuration;
+            _queryStringSerializer = queryStringSerializer;
+        }
+
+        public void Dispose()
+        {
         }
 
         public async Task<IHttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
@@ -31,17 +41,35 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
         }
 
-        public async Task<IHttwrapResponse<T>> GetAsync<T>(string path, Action<HttpStatusCode, string> errorHandler = null)
+        public async Task<IHttwrapResponse> GetAsync(string path, object payload,
+            Action<HttpStatusCode, string> errorHandler = null)
+        {
+            path = string.Format("{0}?{1}", path, _queryStringSerializer.Serialize(payload));
+
+            return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
+        }
+
+        public async Task<IHttwrapResponse<T>> GetAsync<T>(string path,
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler);
         }
 
-        public async Task<IHttwrapResponse> PutAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
+        public async Task<IHttwrapResponse<T>> GetAsync<T>(string path, object payload,
+            Action<HttpStatusCode, string> errorHandler = null)
+        {
+            path = string.Format("{0}?{1}", path, _queryStringSerializer.Serialize(payload));
+            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler);
+        }
+
+        public async Task<IHttwrapResponse> PutAsync<T>(string path, T data,
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(HttpMethod.Put, path, data, errorHandler);
         }
 
-        public async Task<IHttwrapResponse> PostAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
+        public async Task<IHttwrapResponse> PostAsync<T>(string path, T data,
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(HttpMethod.Post, path, data, errorHandler);
         }
@@ -51,7 +79,8 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Delete, path, null, errorHandler);
         }
 
-        public async Task<IHttwrapResponse> PatchAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
+        public async Task<IHttwrapResponse> PatchAsync<T>(string path, T data,
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler);
         }
@@ -118,7 +147,7 @@ namespace Httwrap
 
             var request = new HttpRequestMessage(method, url);
 
-            request.Headers.Add("User-Agent", UserAgent);
+            request.Headers.Add("User-Agent", USER_AGENT);
 
             request.Headers.Add("Accept", "application/json");
 
@@ -132,7 +161,8 @@ namespace Httwrap
             return request;
         }
 
-        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content, Action<HttpStatusCode, string> errorHandler)
+        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content,
+            Action<HttpStatusCode, string> errorHandler)
         {
             if (errorHandler != null)
             {
@@ -142,11 +172,6 @@ namespace Httwrap
             {
                 _defaultErrorHandler(statusCode, content);
             }
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }
