@@ -11,7 +11,7 @@ namespace Httwrap
         private ISerializer _serializer;
 
         public HttwrapConfiguration(string basePath)
-            : this(basePath, null)
+            : this(basePath, httpHandler: null)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Httwrap
             _httpHandler = httpHandler;
         }
 
-        public string BasePath { get; }
+        public string BasePath { get; protected set; }
         public Credentials Credentials { get; set; }
 
         public ISerializer Serializer
