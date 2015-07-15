@@ -22,6 +22,22 @@ Dump(response.Data);
 Dump(response.StatusCode);
 ```
 
+**GET with QueryString**  
+```csharp
+var payload = new FilterRequest
+{
+  Category = "Shoes",
+  NumberOfItems = 10
+};
+
+//Url: api/test?Category=Shoes&NumberOfItems=10
+IHttwrapResponse<List<Product>> response = 
+                            await _client.GetAsync<List<Product>>("api/test", payload);
+
+Dump(response.Data);
+Dump(response.StatusCode);
+```
+
 **GET**  
 ```csharp
 IHttwrapResponse response = await _httwrap.GetAsync("api/products");
