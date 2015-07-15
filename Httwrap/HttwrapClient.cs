@@ -9,7 +9,7 @@ namespace Httwrap
 {
     public sealed class HttwrapClient : IHttwrapClient, IDisposable
     {
-        private const string USER_AGENT = "Httwrap";
+        private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
 
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
@@ -147,7 +147,7 @@ namespace Httwrap
 
             var request = new HttpRequestMessage(method, url);
 
-            request.Headers.Add("User-Agent", USER_AGENT);
+            request.Headers.Add("User-Agent", UserAgent);
 
             request.Headers.Add("Accept", "application/json");
 
