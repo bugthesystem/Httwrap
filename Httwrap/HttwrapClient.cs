@@ -22,7 +22,8 @@ namespace Httwrap
 
         private readonly IQueryStringBuilder _queryStringBuilder;
 
-        public HttwrapClient(IHttwrapConfiguration configuration) : this(configuration, new QueryStringBuilder())
+        public HttwrapClient(IHttwrapConfiguration configuration)
+            : this(configuration, new QueryStringBuilder())
         {
         }
 
@@ -93,7 +94,7 @@ namespace Httwrap
                     RequestInnerAsync(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body);
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             HandleIfErrorResponse(response.StatusCode, content, errorHandler);
 
@@ -108,7 +109,7 @@ namespace Httwrap
                     RequestInnerAsync(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body);
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             HandleIfErrorResponse(response.StatusCode, content, errorHandler);
 
@@ -131,7 +132,7 @@ namespace Httwrap
                 }
 
                 var request = PrepareRequest(method, body, path);
-                return await client.SendAsync(request, completionOption, cancellationToken);
+                return await client.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
