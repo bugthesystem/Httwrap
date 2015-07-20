@@ -25,13 +25,22 @@ Dump(response.StatusCode);
 **GET with QueryString**  
 *_It supports `DataMember` and `IgnoreDataMember` attributes._*  
 ```csharp
+/*
+public class FilterRequest
+{
+  [DataMember(Name = "cat")]
+  public string Category { get; set; }
+  
+  public int NumberOfItems { get; set; }
+}
+*/
 var payload = new FilterRequest
 {
   Category = "Shoes",
   NumberOfItems = 10
 };
 
-//Url: api/test?Category=Shoes&NumberOfItems=10
+//Url: api/test?cat=Shoes&NumberOfItems=10
 IHttwrapResponse<List<Product>> response =
                             await _client.GetAsync<List<Product>>("api/test", payload);
 
