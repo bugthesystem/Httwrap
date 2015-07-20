@@ -20,16 +20,16 @@ namespace Httwrap
             }
         };
 
-        private readonly IQueryStringSerializer _queryStringSerializer;
+        private readonly IQueryStringBuilder _queryStringBuilder;
 
-        public HttwrapClient(IHttwrapConfiguration configuration) : this(configuration, new QueryStringSerializer())
+        public HttwrapClient(IHttwrapConfiguration configuration) : this(configuration, new QueryStringBuilder())
         {
         }
 
-        internal HttwrapClient(IHttwrapConfiguration configuration, IQueryStringSerializer queryStringSerializer)
+        internal HttwrapClient(IHttwrapConfiguration configuration, IQueryStringBuilder queryStringBuilder)
         {
             _configuration = configuration;
-            _queryStringSerializer = queryStringSerializer;
+            _queryStringBuilder = queryStringBuilder;
         }
 
         public void Dispose()
@@ -44,7 +44,7 @@ namespace Httwrap
         public async Task<IHttwrapResponse> GetAsync(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null)
         {
-            path = string.Format("{0}?{1}", path, _queryStringSerializer.Serialize(payload));
+            path = string.Format("{0}?{1}", path, _queryStringBuilder.BuildFrom(payload));
 
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
         }
@@ -58,7 +58,7 @@ namespace Httwrap
         public async Task<IHttwrapResponse<T>> GetAsync<T>(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null)
         {
-            path = string.Format("{0}?{1}", path, _queryStringSerializer.Serialize(payload));
+            path = string.Format("{0}?{1}", path, _queryStringBuilder.BuildFrom(payload));
             return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler);
         }
 

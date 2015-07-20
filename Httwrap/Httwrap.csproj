@@ -60,12 +60,12 @@
     <Compile Include="Interface\IHttwrapConfiguration.cs" />
     <Compile Include="Interface\ISerializer.cs" />
     <Compile Include="Interface\IRequestContent.cs" />
-    <Compile Include="IQueryStringSerializer.cs" />
+    <Compile Include="IQueryStringBuilder.cs" />
     <Compile Include="JsonRequestContent.cs" />
     <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
     <Compile Include="JExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryStringSerializer.cs" />
+    <Compile Include="QueryStringBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">

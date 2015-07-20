@@ -23,6 +23,7 @@ Dump(response.StatusCode);
 ```
 
 **GET with QueryString**  
+*_It supports `DataMember` and `IgnoreDataMember` attributes._*  
 ```csharp
 var payload = new FilterRequest
 {
@@ -31,7 +32,7 @@ var payload = new FilterRequest
 };
 
 //Url: api/test?Category=Shoes&NumberOfItems=10
-IHttwrapResponse<List<Product>> response = 
+IHttwrapResponse<List<Product>> response =
                             await _client.GetAsync<List<Product>>("api/test", payload);
 
 Dump(response.Data);
@@ -78,7 +79,7 @@ Dump(response.StatusCode);
 
 **Error Handler**  
 ```csharp
-IHttwrapResponse<List<Product>> response = 
+IHttwrapResponse<List<Product>> response =
       await _httwrap.GetAsync<List<Product>>("api/products", (statusCode, body) =>
       {
         _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);
