@@ -42,7 +42,7 @@ namespace Httwrap.Tests
             item = Repository.Add(item);
             var response = Request.CreateResponse(HttpStatusCode.Created, item);
 
-            var uri = Url.Link("DefaultApi", new {id = item.Id});
+            var uri = Url.Link("DefaultApi", new { id = item.Id });
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -77,10 +77,16 @@ namespace Httwrap.Tests
         }
 
         [HttpGet]
-        public void ClearAll(string op)
+        public IHttpActionResult ClearAll(string op)
         {
             if (op == "clear")
+            {
                 Repository.ClearAll();
+
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }
