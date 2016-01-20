@@ -11,6 +11,7 @@ namespace Httwrap
     {
         private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
@@ -31,10 +32,12 @@ namespace Httwrap
         {
             _configuration = configuration;
             _queryStringBuilder = queryStringBuilder;
+            _httpClient = _configuration.GetHttpClient();
         }
 
         public void Dispose()
         {
+            _httpClient.Dispose();
         }
 
         public async Task<IHttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
@@ -45,7 +48,7 @@ namespace Httwrap
         public async Task<IHttwrapResponse> GetAsync(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null)
         {
-            path = string.Format("{0}?{1}", path, _queryStringBuilder.BuildFrom(payload));
+            path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
 
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler);
         }
@@ -59,7 +62,7 @@ namespace Httwrap
         public async Task<IHttwrapResponse<T>> GetAsync<T>(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null)
         {
-            path = string.Format("{0}?{1}", path, _queryStringBuilder.BuildFrom(payload));
+            path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
             return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler);
         }
 
@@ -125,26 +128,23 @@ namespace Httwrap
         {
             try
             {
-                var client = _configuration.GetHttpClient();
                 if (requestTimeout.HasValue)
                 {
-                    client.Timeout = requestTimeout.Value;
+                    _httpClient.Timeout = requestTimeout.Value;
                 }
 
                 var request = PrepareRequest(method, body, path);
-                return await client.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
+                return await _httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                throw new HttwrapException(
-                    string.Format("An error occured while execution request. Path : {0} , HttpMethod : {1}", path,
-                        method), ex);
+                throw new HttwrapException($"An error occured while execution request. Path : {path} , HttpMethod : {method}", ex);
             }
         }
 
         private HttpRequestMessage PrepareRequest(HttpMethod method, object body, string path)
         {
-            var url = string.Format("{0}{1}", _configuration.BasePath, path);
+            var url = $"{_configuration.BasePath}{path}";
 
             var request = new HttpRequestMessage(method, url);
 
@@ -162,8 +162,7 @@ namespace Httwrap
             return request;
         }
 
-        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content,
-            Action<HttpStatusCode, string> errorHandler)
+        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content, Action<HttpStatusCode, string> errorHandler)
         {
             if (errorHandler != null)
             {

@@ -36,8 +36,7 @@ namespace Httwrap.Tests
         [TestFixtureTearDown]
         protected void TestTearDown()
         {
-            if (_server != null)
-                _server.Dispose();
+            _server?.Dispose();
         }
 
         private async Task ClearApiCache()

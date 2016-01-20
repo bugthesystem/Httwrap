@@ -60,7 +60,7 @@ namespace Httwrap.Tests
         [AcceptVerbs("Patch")]
         public string Patch(int id, Product product)
         {
-            return string.Format("PATCH:{0}", id);
+            return $"PATCH:{id}";
         }
 
         [HttpDelete]
