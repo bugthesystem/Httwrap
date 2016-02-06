@@ -23,7 +23,7 @@ namespace Httwrap.Tests
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
             item.Id = _nextId++;
@@ -40,9 +40,9 @@ namespace Httwrap.Tests
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
-            int index = _products.FindIndex(p => p.Id == item.Id);
+            var index = _products.FindIndex(p => p.Id == item.Id);
             if (index == -1)
             {
                 return false;

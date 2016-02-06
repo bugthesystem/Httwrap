@@ -1,5 +1,5 @@
-using Httwrap.Auth;
 using System.Net.Http;
+using Httwrap.Auth;
 using Httwrap.Interface;
 using Httwrap.Serialization;
 
@@ -13,7 +13,6 @@ namespace Httwrap
         public HttwrapConfiguration(string basePath)
             : this(basePath, httpHandler: null)
         {
-
         }
 
         public HttwrapConfiguration(string basePath, HttpMessageHandler httpHandler = null)
@@ -23,7 +22,7 @@ namespace Httwrap
             _httpHandler = httpHandler;
         }
 
-        public string BasePath { get; private set; }
+        public string BasePath { get; protected set; }
         public Credentials Credentials { get; set; }
 
         public ISerializer Serializer

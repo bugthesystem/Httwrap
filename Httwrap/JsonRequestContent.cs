@@ -8,13 +8,15 @@ namespace Httwrap
 {
     internal class JsonRequestContent : IRequestContent
     {
+        private readonly object _value;
+        private readonly ISerializer _serializerWrapper;
         private const string JsonMimeType = "application/json";
 
-        public JsonRequestContent(object val, ISerializer serializerWrapper)
+        public JsonRequestContent(object value, ISerializer serializerWrapper)
         {
-            if (EqualityComparer<object>.Default.Equals(val))
+            if (EqualityComparer<object>.Default.Equals(value))
             {
-                throw new ArgumentNullException("val");
+                throw new ArgumentNullException("value");
             }
 
             if (serializerWrapper == null)
@@ -22,16 +24,14 @@ namespace Httwrap
                 throw new ArgumentNullException("serializerWrapper");
             }
 
-            Value = val;
-            SerializerWrapper = serializerWrapper;
+            _value = value;
+            _serializerWrapper = serializerWrapper;
         }
 
-        private object Value { get; set; }
-        private ISerializer SerializerWrapper { get; set; }
 
         public HttpContent GetContent()
         {
-            var serializedObject = SerializerWrapper.Serialize(Value);
+            var serializedObject = _serializerWrapper.Serialize(_value);
             return new StringContent(serializedObject, Encoding.UTF8, JsonMimeType);
         }
     }
