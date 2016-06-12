@@ -17,7 +17,7 @@ namespace Httwrap.Tests
     {
         private IDisposable _server;
         private IHttwrapClient _client;
-        private const string BASE_ADDRESS = "http://localhost:9000/";
+        private const string BaseAddress = "http://localhost:9000/";
 
         protected override async void FinalizeSetUp()
         {
@@ -27,9 +27,9 @@ namespace Httwrap.Tests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = WebApp.Start<Startup>(BASE_ADDRESS);
+            _server = WebApp.Start<Startup>(BaseAddress);
 
-            IHttwrapConfiguration configuration = new HttwrapConfiguration(BASE_ADDRESS);
+            IHttwrapConfiguration configuration = new HttwrapConfiguration(BaseAddress);
             _client = new HttwrapClient(configuration);
         }
 
@@ -125,7 +125,7 @@ namespace Httwrap.Tests
         [Test]
         public void OAuth_with_username_password_should_set_auth_header_Test()
         {
-            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BASE_ADDRESS + "api/authentication/token");
+            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "api/authentication/token");
             var client = credentials.BuildHttpClient();
             client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
             var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");

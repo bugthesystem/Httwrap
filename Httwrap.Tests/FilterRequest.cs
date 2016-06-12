@@ -13,10 +13,10 @@ namespace Httwrap.Tests
         [DataMember(Name = "cat")]
         public string Category { get; set; }
 
-       
+
         public int NumberOfItems { get; set; }
-    }  
-    
+    }
+
     public class IgnoreAttributeRequest
     {
         public string Category { get; set; }

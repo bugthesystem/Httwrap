@@ -49,11 +49,14 @@ namespace Httwrap
 
         private bool HasIgnoreDataMemberAttribute(PropertyInfo info)
         {
-            List<IgnoreDataMemberAttribute> attributes = info.GetCustomAttributes(typeof(IgnoreDataMemberAttribute), true).Cast<IgnoreDataMemberAttribute>().ToList();
+            var attributes =
+                info.GetCustomAttributes(typeof(IgnoreDataMemberAttribute), true)
+                    .Cast<IgnoreDataMemberAttribute>()
+                    .ToList();
 
             if (attributes.Any())
             {
-                IgnoreDataMemberAttribute attribute = attributes.FirstOrDefault();
+                var attribute = attributes.FirstOrDefault();
 
                 if (attribute != null)
                 {
@@ -66,12 +69,12 @@ namespace Httwrap
 
         private string GetName(PropertyInfo info)
         {
-
-            IEnumerable<DataMemberAttribute> attributes = info.GetCustomAttributes(typeof(DataMemberAttribute), true).Cast<DataMemberAttribute>().ToList();
+            IEnumerable<DataMemberAttribute> attributes =
+                info.GetCustomAttributes(typeof(DataMemberAttribute), true).Cast<DataMemberAttribute>().ToList();
 
             if (attributes.Any())
             {
-                DataMemberAttribute attribute = attributes.FirstOrDefault();
+                var attribute = attributes.FirstOrDefault();
 
                 if (attribute != null)
                 {
