@@ -5,8 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Httwrap.Interception;
-using Httwrap.Interface;
-using Httwrap.Interface;    
+using Httwrap.Interface; 
 
 namespace Httwrap
 {
@@ -154,7 +153,7 @@ namespace Httwrap
                     interceptor.OnRequest(request);
                 }
 
-                HttpResponseMessage response = await client.SendAsync(request, completionOption, cancellationToken);
+                HttpResponseMessage response = await _httpClient.SendAsync(request, completionOption, cancellationToken);
 
                 foreach (IHttpInterceptor interceptor in _interceptors)
                 {

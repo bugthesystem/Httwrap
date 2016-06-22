@@ -156,50 +156,16 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Put_test()
-        {
-            var name = "Put Test Product";
-
-            var product = FixtureRepository.Build<Product>()
-                .With(p => p.Name, name)
-                .Without(p => p.Id)
-                .Create();
-
-            await _client.PostAsync("api/products", product);
-
-            var putResponse = await _client.PutAsync("api/products/1", product);
-
-            var getResponse = await _client.GetAsync<Product>("api/products/1");
-
-            putResponse.Should().NotBeNull();
-            putResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-            getResponse.Should().NotBeNull();
-            getResponse.Data.Should().NotBeNull();
-            getResponse.Data.Name.ShouldBeEquivalentTo(PUT_TEST_PRODUCT_NAME);
-        }
-
-        [Test]
-        public async void Delete_test()
-        {
-            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
-            await _client.PostAsync("api/products", product);
-
-            IHttwrapResponse response = await _client.DeleteAsync("api/products/1");
-
-            response.Should().NotBeNull();
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-        }
-
-        [Test]
         public async void Interceptor_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
 
-            _client.AddInterceptor(new DummyInterceptor());
-            var response = await _client.GetAsync("api/products/1");
+            IHttwrapConfiguration configuration = new HttwrapConfiguration(BaseAddress);
+            HttwrapClient client = new HttwrapClient(configuration);
+
+            client.AddInterceptor(new DummyInterceptor());
+            var response = await client.GetAsync("api/products/1");
             response.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Accepted);
         }
 
@@ -208,12 +174,6 @@ namespace Httwrap.Tests
         {
             if (_server != null)
                 _server.Dispose();
-        }
-
-        private async Task ClearApiCache()
-        {
-            IHttwrapResponse clearResponse = await _client.GetAsync("api/products?op=clear");
-            clearResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }

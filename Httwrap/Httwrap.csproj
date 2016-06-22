@@ -56,7 +56,6 @@
     <Compile Include="HttwrapConfiguration.cs" />
     <Compile Include="HttwrapException.cs" />
     <Compile Include="HttwrapResponse.cs" />
-    <Compile Include="IHttwrapResponse.cs" />
     <Compile Include="Interception\IHttpInterceptor.cs" />
     <Compile Include="Interface\IHttwrapResponse.cs" />
     <Compile Include="Interface\IHttwrapClient.cs" />
