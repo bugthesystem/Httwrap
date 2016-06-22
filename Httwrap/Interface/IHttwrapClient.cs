@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Httwrap.Interception;
 
 namespace Httwrap.Interface
 {
@@ -12,5 +13,6 @@ namespace Httwrap.Interface
         Task<IHttwrapResponse> PostAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null);
         Task<IHttwrapResponse> DeleteAsync(string path, Action<HttpStatusCode, string> errorHandler = null);
         Task<IHttwrapResponse> PatchAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null);
+        void AddInterceptor(IHttpInterceptor interceptor);
     }
 }

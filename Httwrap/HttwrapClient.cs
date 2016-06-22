@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Httwrap.Interception;
 using Httwrap.Interface;
 
 namespace Httwrap
@@ -11,6 +13,7 @@ namespace Httwrap
     {
         private const string UserAgent = "Httwrap";
         private readonly IHttwrapConfiguration _configuration;
+        private readonly ICollection<IHttpInterceptor> _interceptors;
 
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
@@ -23,6 +26,7 @@ namespace Httwrap
         public HttwrapClient(IHttwrapConfiguration configuration)
         {
             _configuration = configuration;
+            _interceptors = new List<IHttpInterceptor>();
         }
 
         public async Task<IHttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null)
@@ -53,6 +57,11 @@ namespace Httwrap
         public async Task<IHttwrapResponse> PatchAsync<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null)
         {
             return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler);
+        }
+
+        public void AddInterceptor(IHttpInterceptor interceptor)
+        {
+            _interceptors.Add(interceptor);
         }
 
         private async Task<IHttwrapResponse> RequestAsync(HttpMethod method, string path, object body,
@@ -103,7 +112,19 @@ namespace Httwrap
 
                 var request = PrepareRequest(method, body, path);
 
-                return await client.SendAsync(request, completionOption, cancellationToken);
+                foreach (IHttpInterceptor interceptor in _interceptors)
+                {
+                    interceptor.OnRequest(request);
+                }
+
+                HttpResponseMessage response = await client.SendAsync(request, completionOption, cancellationToken);
+
+                foreach (IHttpInterceptor interceptor in _interceptors)
+                {
+                    interceptor.OnResponse(request, response);
+                }
+
+                return response;
             }
             catch (Exception ex)
             {

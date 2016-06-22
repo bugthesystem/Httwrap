@@ -96,7 +96,6 @@ namespace Httwrap.Tests
             getResponse.Data.Name.ShouldBeEquivalentTo(PUT_TEST_PRODUCT_NAME);
         }
 
-
         [Test]
         public async void Delete_test()
         {
@@ -108,6 +107,17 @@ namespace Httwrap.Tests
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
+        }
+
+        [Test]
+        public async void Interceptor_test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _client.PostAsync("api/products", product);
+
+            _client.AddInterceptor(new DummyInterceptor());
+            var response = await _client.GetAsync("api/products/1");
+            response.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Accepted);
         }
 
         [TestFixtureTearDown]
