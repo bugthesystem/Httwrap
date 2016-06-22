@@ -1,7 +1,7 @@
 # Httwrap
-General purpose HttpClient wrapper
+General purpose, simple but useful HttpClient wrapper for .NET & Xamarin/Mono
 
-[![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)
+[![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)[![Coverage Status](https://coveralls.io/repos/ziyasal/Httwrap/badge.svg)](https://coveralls.io/r/ziyasal/Httwrap)
 
 ## How to use  
 
@@ -18,6 +18,32 @@ PM> Install-Package Httwrap
 **GET**  
 ```csharp
 IHttwrapResponse<Product> response = await _httwrap.GetAsync<Product>("api/products/1");
+Dump(response.Data);
+Dump(response.StatusCode);
+```
+
+**GET with QueryString**  
+*_It supports `DataMember` and `IgnoreDataMember` attributes._*  
+```csharp
+/*
+public class FilterRequest
+{
+  [DataMember(Name = "cat")]
+  public string Category { get; set; }
+  
+  public int NumberOfItems { get; set; }
+}
+*/
+var payload = new FilterRequest
+{
+  Category = "Shoes",
+  NumberOfItems = 10
+};
+
+//Url: api/test?cat=Shoes&NumberOfItems=10
+IHttwrapResponse<List<Product>> response =
+                            await _client.GetAsync<List<Product>>("api/test", payload);
+
 Dump(response.Data);
 Dump(response.StatusCode);
 ```
@@ -62,11 +88,39 @@ Dump(response.StatusCode);
 
 **Error Handler**  
 ```csharp
-IHttwrapResponse<List<Product>> response = 
+IHttwrapResponse<List<Product>> response =
       await _httwrap.GetAsync<List<Product>>("api/products", (statusCode, body) =>
       {
         _logger.Error("Body :{0}, StatusCode :{1}", body, statusCode);
       });
+```
+
+**Basic Credentials**
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new BasicAuthCredentials("user", "s3cr3t")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
+```
+
+**OAuth Credentials**  
+_**Use existing ```token```**_
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new OAuthCredentials("token")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
+```
+_**Use Username / password to get token from ```edpoint```**_
+
+```csharp
+IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
+{
+  Credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "/token")
+};
+IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
 ##Bugs
