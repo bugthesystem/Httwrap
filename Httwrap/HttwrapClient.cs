@@ -51,6 +51,13 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders);
         }
 
+        public IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
+
+            return Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
+        }
+
         public async Task<IHttwrapResponse> GetAsync(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
@@ -101,6 +108,19 @@ namespace Httwrap
             _interceptors.Add(interceptor);
         }
 
+        private IHttwrapResponse Request(HttpMethod method, string path, object body,
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            var response = RequestImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+                        path, body, customHeaders);
+
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            HandleIfErrorResponse(response.StatusCode, content, errorHandler);
+
+            return new HttwrapResponse(response.StatusCode, content);
+        }
+
         private async Task<IHttwrapResponse> RequestAsync(HttpMethod method, string path, object body,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
@@ -133,6 +153,40 @@ namespace Httwrap
             {
                 Data = _configuration.Serializer.Deserialize<T>(content)
             };
+        }
+
+        private HttpResponseMessage RequestImpl(TimeSpan? requestTimeout,
+            HttpCompletionOption completionOption, CancellationToken cancellationToken, HttpMethod method,
+            string path, object body, Dictionary<string, string> customHeaders = null)
+        {
+            try
+            {
+                if (requestTimeout.HasValue)
+                {
+                    _httpClient.Timeout = requestTimeout.Value;
+                }
+
+                var request = PrepareRequest(method, body, path);
+
+                foreach (IHttpInterceptor interceptor in _interceptors)
+                {
+                    interceptor.OnRequest(request);
+                }
+
+                HttpResponseMessage response = _httpClient.SendAsync(request, completionOption, cancellationToken).Result;
+
+                foreach (IHttpInterceptor interceptor in _interceptors)
+                {
+                    interceptor.OnResponse(request, response);
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new HttwrapException(
+                    $"An error occured while execution request. Path : {path} , HttpMethod : {method}", ex);
+            }
         }
 
         private async Task<HttpResponseMessage> RequestAsyncImpl(TimeSpan? requestTimeout,
