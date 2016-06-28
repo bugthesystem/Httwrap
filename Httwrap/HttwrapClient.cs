@@ -166,7 +166,7 @@ namespace Httwrap
                     _httpClient.Timeout = requestTimeout.Value;
                 }
 
-                var request = PrepareRequest(method, body, path);
+                var request = PrepareRequest(method, body, path, customHeaders);
 
                 foreach (IHttpInterceptor interceptor in _interceptors)
                 {
@@ -200,7 +200,7 @@ namespace Httwrap
                     _httpClient.Timeout = requestTimeout.Value;
                 }
 
-                var request = PrepareRequest(method, body, path);
+                var request = PrepareRequest(method, body, path, customHeaders);
 
                 foreach (IHttpInterceptor interceptor in _interceptors)
                 {
