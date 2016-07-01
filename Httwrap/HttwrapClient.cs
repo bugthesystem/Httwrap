@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Httwrap.Interception;
-using Httwrap.Interface; 
+using Httwrap.Interface;
 
 namespace Httwrap
 {
@@ -85,10 +85,20 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Put, path, data, errorHandler, customHeaders);
         }
 
+        public IHttwrapResponse Put<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            return Request(HttpMethod.Put, path, data, errorHandler, customHeaders);
+        }
+
         public async Task<IHttwrapResponse> PostAsync<T>(string path, T data,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
             return await RequestAsync(HttpMethod.Post, path, data, errorHandler, customHeaders);
+        }
+
+        public IHttwrapResponse Post<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            return Request(HttpMethod.Post, path, data, errorHandler, customHeaders);
         }
 
         public async Task<IHttwrapResponse> DeleteAsync(string path, Action<HttpStatusCode, string> errorHandler = null,
@@ -97,10 +107,21 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Delete, path, null, errorHandler, customHeaders);
         }
 
+        public IHttwrapResponse Delete(string path, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            return Request(HttpMethod.Delete, path, null, errorHandler, customHeaders);
+
+        }
+
         public async Task<IHttwrapResponse> PatchAsync<T>(string path, T data,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
             return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders);
+        }
+
+        public IHttwrapResponse Patch<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            return Request(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders);
         }
 
         public void AddInterceptor(IHttpInterceptor interceptor)
@@ -110,6 +131,19 @@ namespace Httwrap
 
         private IHttwrapResponse Request(HttpMethod method, string path, object body,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            var response = RequestImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+                        path, body, customHeaders);
+
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            HandleIfErrorResponse(response.StatusCode, content, errorHandler);
+
+            return new HttwrapResponse(response.StatusCode, content);
+        }
+
+        private IHttwrapResponse Request<T>(HttpMethod method, string path, object body,
+          Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
             var response = RequestImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body, customHeaders);
