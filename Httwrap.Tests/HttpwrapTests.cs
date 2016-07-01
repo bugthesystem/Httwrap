@@ -169,6 +169,43 @@ namespace Httwrap.Tests
             response.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Accepted);
         }
 
+
+        [Test]
+        public void PostSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(item => item.Id).Create();
+
+            IHttwrapResponse result = _client.Post("api/products", product);
+
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Created);
+            result.Should().NotBeNull();
+        }
+
+        [Test]
+        public void GetAllSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+
+            IHttwrapResponse savedProduct = _client.Post("api/products", product);
+
+            IHttwrapResponse result = _client.Get("api/products", savedProduct);
+
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.OK);
+        }
+
+        [Test]
+        public void DeleteSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+
+            _client.Post("api/products", product);
+
+            IHttwrapResponse result = _client.Delete("api/products/1");
+
+            result.Should().NotBeNull();
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.NoContent);
+        }
+
         [TestFixtureTearDown]
         protected void TesTearDown()
         {
