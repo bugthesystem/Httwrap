@@ -14,6 +14,9 @@ namespace Httwrap.Interface
         IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null,
             Dictionary<string, string> customHeaders = null);
 
+        IHttwrapResponse Get(string path, Action<HttpStatusCode, string> errorHandler = null,
+           Dictionary<string, string> customHeaders = null);
+
         Task<IHttwrapResponse> GetAsync(string path, object payload, Action<HttpStatusCode, string> errorHandler = null,
             Dictionary<string, string> customHeaders = null);
 
