@@ -51,13 +51,7 @@ namespace Httwrap
             return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders);
         }
 
-        public IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
-        {
-            path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
-
-            return Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
-        }
-
+      
         public async Task<IHttwrapResponse> GetAsync(string path, object payload,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
@@ -79,6 +73,18 @@ namespace Httwrap
             return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler, customHeaders);
         }
 
+        public  IHttwrapResponse Get(string path, Action<HttpStatusCode, string> errorHandler = null,
+           Dictionary<string, string> customHeaders = null)
+        {
+            return  Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
+        }
+        public IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        {
+            path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
+
+            return Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
+        }
+        
         public async Task<IHttwrapResponse> PutAsync<T>(string path, T data,
             Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
         {
