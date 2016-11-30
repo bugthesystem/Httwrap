@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 
-namespace Httwrap
+namespace Httwrap.Interface
 {
     public interface IHttwrapResponse<out T> : IHttwrapResponse
     {

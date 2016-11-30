@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using Httwrap.Interface;
 
 namespace Httwrap
 {
@@ -31,8 +32,6 @@ namespace Httwrap
 
     public class HttwrapResponse<T> : HttwrapResponse, IHttwrapResponse<T>
     {
-        public T Data { get; set; }
-
         public HttwrapResponse(HttpStatusCode statusCode, string body)
             : base(statusCode, body)
         {
@@ -42,5 +41,7 @@ namespace Httwrap
             : base(message)
         {
         }
+
+        public T Data { get; set; }
     }
 }
