@@ -11,7 +11,7 @@ namespace Httwrap
         private ISerializer _serializer;
 
         public HttwrapConfiguration(string basePath)
-            : this(basePath, httpHandler: null)
+            : this(basePath, null)
         {
         }
 

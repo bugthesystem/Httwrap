@@ -17,7 +17,7 @@ namespace Httwrap.Tests
     {
         private IDisposable _server;
         private IHttwrapClient _client;
-        private const string BASE_ADDRESS = "http://localhost:9000/";
+        private const string BaseAddress = "http://localhost:9000/";
 
         protected override async void FinalizeSetUp()
         {
@@ -27,17 +27,16 @@ namespace Httwrap.Tests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = WebApp.Start<Startup>(BASE_ADDRESS);
+            _server = WebApp.Start<Startup>(BaseAddress);
 
-            IHttwrapConfiguration configuration = new HttwrapConfiguration(BASE_ADDRESS);
+            IHttwrapConfiguration configuration = new HttwrapConfiguration(BaseAddress);
             _client = new HttwrapClient(configuration);
         }
 
         [TestFixtureTearDown]
         protected void TestTearDown()
         {
-            if (_server != null)
-                _server.Dispose();
+            _server?.Dispose();
         }
 
         private async Task ClearApiCache()
@@ -126,7 +125,7 @@ namespace Httwrap.Tests
         [Test]
         public void OAuth_with_username_password_should_set_auth_header_Test()
         {
-            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BASE_ADDRESS + "api/authentication/token");
+            var credentials = new OAuthCredentials("us3r", "p4ssw0rd", BaseAddress + "api/authentication/token");
             var client = credentials.BuildHttpClient();
             client.DefaultRequestHeaders.Should().NotBeNullOrEmpty();
             var header = client.DefaultRequestHeaders.FirstOrDefault(pair => pair.Key == "Authorization");
@@ -157,27 +156,61 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Put_test()
+        public async void Interceptor_test()
         {
-            var name = "Put Test Product";
-
-            var product = FixtureRepository.Build<Product>()
-                .With(p => p.Name, name)
-                .Without(p => p.Id)
-                .Create();
-
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
 
-            var putResponse = await _client.PutAsync("api/products/1", product);
+            IHttwrapConfiguration configuration = new HttwrapConfiguration(BaseAddress);
+            HttwrapClient client = new HttwrapClient(configuration);
 
-            var getResponse = await _client.GetAsync<Product>("api/products/1");
+            client.AddInterceptor(new DummyInterceptor());
+            var response = await client.GetAsync("api/products/1");
+            response.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Accepted);
+        }
 
-            putResponse.Should().NotBeNull();
-            putResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-            getResponse.Should().NotBeNull();
-            getResponse.Data.Should().NotBeNull();
-            getResponse.Data.Name.ShouldBeEquivalentTo(name);
+        [Test]
+        public void PostSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(item => item.Id).Create();
+
+            IHttwrapResponse result = _client.Post("api/products", product);
+
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.Created);
+            result.Should().NotBeNull();
+        }
+
+        [Test]
+        public void GetAllSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+
+            IHttwrapResponse savedProduct = _client.Post("api/products", product);
+
+            IHttwrapResponse result = _client.Get("api/products", savedProduct);
+
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.OK);
+        }
+
+        [Test]
+        public void DeleteSync_Test()
+        {
+            Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+
+            _client.Post("api/products", product);
+
+            IHttwrapResponse result = _client.Delete("api/products/1");
+
+            result.Should().NotBeNull();
+            result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.NoContent);
+        }
+
+        [TestFixtureTearDown]
+        protected void TesTearDown()
+        {
+            if (_server != null)
+                _server.Dispose();
         }
     }
 }

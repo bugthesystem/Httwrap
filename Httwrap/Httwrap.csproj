@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,6 +56,7 @@
     <Compile Include="HttwrapConfiguration.cs" />
     <Compile Include="HttwrapException.cs" />
     <Compile Include="HttwrapResponse.cs" />
+    <Compile Include="Interception\IHttpInterceptor.cs" />
     <Compile Include="Interface\IHttwrapResponse.cs" />
     <Compile Include="Interface\IHttwrapClient.cs" />
     <Compile Include="Interface\IHttwrapConfiguration.cs" />

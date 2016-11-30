@@ -42,7 +42,7 @@ namespace Httwrap.Tests
             item = Repository.Add(item);
             var response = Request.CreateResponse(HttpStatusCode.Created, item);
 
-            var uri = Url.Link("DefaultApi", new { id = item.Id });
+            var uri = Url.Link("DefaultApi", new {id = item.Id});
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -60,7 +60,7 @@ namespace Httwrap.Tests
         [AcceptVerbs("Patch")]
         public string Patch(int id, Product product)
         {
-            return string.Format("PATCH:{0}", id);
+            return $"PATCH:{id}";
         }
 
         [HttpDelete]

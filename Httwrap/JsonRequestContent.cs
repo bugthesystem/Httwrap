@@ -8,9 +8,9 @@ namespace Httwrap
 {
     internal class JsonRequestContent : IRequestContent
     {
-        private readonly object _value;
-        private readonly ISerializer _serializerWrapper;
         private const string JsonMimeType = "application/json";
+        private readonly ISerializer _serializerWrapper;
+        private readonly object _value;
 
         public JsonRequestContent(object value, ISerializer serializerWrapper)
         {
