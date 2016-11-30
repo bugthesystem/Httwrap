@@ -123,6 +123,27 @@ IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost
 IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
+**Interceptor**
+```csharp
+public class DummyInterceptor : IHttpInterceptor
+    {
+        private readonly IHttwrapClient _client;
+
+        public void OnRequest(HttpRequestMessage request)
+        {
+            
+        }
+
+        public void OnResponse(HttpRequestMessage request, HttpResponseMessage response)
+        {
+            response.StatusCode = HttpStatusCode.Accepted;
+        }
+    }
+    
+client.AddInterceptor(new DummyInterceptor());
+    
+```
+
 ##Bugs
 If you encounter a bug, performance issue, or malfunction, please add an [Issue](https://github.com/ziyasal/Httwrap/issues) with steps on how to reproduce the problem.
 
