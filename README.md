@@ -144,13 +144,15 @@ client.AddInterceptor(new DummyInterceptor());
     
 ```
 
-##Bugs
+## Bugs
 If you encounter a bug, performance issue, or malfunction, please add an [Issue](https://github.com/ziyasal/Httwrap/issues) with steps on how to reproduce the problem.
 
-##TODO
+## TODO
 - Add more tests
 - Add more documentation
 
-##License
+## License
 
 Code and documentation are available according to the *MIT* License (see [LICENSE](https://github.com/ziyasal/Httwrap/blob/master/LICENSE)).
+
+@ziλasal
