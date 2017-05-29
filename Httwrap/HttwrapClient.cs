@@ -46,88 +46,88 @@ namespace Httwrap
         }
 
         public async Task<IHttwrapResponse> GetAsync(string path, Action<HttpStatusCode, string> errorHandler = null,
-            Dictionary<string, string> customHeaders = null)
+            Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
 
       
         public async Task<IHttwrapResponse> GetAsync(string path, object payload,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
             path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
 
-            return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return await RequestAsync(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
 
         public async Task<IHttwrapResponse<T>> GetAsync<T>(string path,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
 
         public async Task<IHttwrapResponse<T>> GetAsync<T>(string path, object payload,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
             path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
-            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return await RequestAsync<T>(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
 
         public  IHttwrapResponse Get(string path, Action<HttpStatusCode, string> errorHandler = null,
-           Dictionary<string, string> customHeaders = null)
+           Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return  Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return  Request(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
-        public IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        public IHttwrapResponse Get(string path, object payload, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
             path = $"{path}?{_queryStringBuilder.BuildFrom(payload)}";
 
-            return Request(HttpMethod.Get, path, null, errorHandler, customHeaders);
+            return Request(HttpMethod.Get, path, null, errorHandler, customHeaders, requestTimeout);
         }
         
         public async Task<IHttwrapResponse> PutAsync<T>(string path, T data,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync(HttpMethod.Put, path, data, errorHandler, customHeaders);
+            return await RequestAsync(HttpMethod.Put, path, data, errorHandler, customHeaders, requestTimeout);
         }
 
-        public IHttwrapResponse Put<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        public IHttwrapResponse Put<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return Request(HttpMethod.Put, path, data, errorHandler, customHeaders);
+            return Request(HttpMethod.Put, path, data, errorHandler, customHeaders, requestTimeout);
         }
 
         public async Task<IHttwrapResponse> PostAsync<T>(string path, T data,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync(HttpMethod.Post, path, data, errorHandler, customHeaders);
+            return await RequestAsync(HttpMethod.Post, path, data, errorHandler, customHeaders, requestTimeout);
         }
 
-        public IHttwrapResponse Post<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        public IHttwrapResponse Post<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return Request(HttpMethod.Post, path, data, errorHandler, customHeaders);
+            return Request(HttpMethod.Post, path, data, errorHandler, customHeaders, requestTimeout);
         }
 
         public async Task<IHttwrapResponse> DeleteAsync(string path, Action<HttpStatusCode, string> errorHandler = null,
-            Dictionary<string, string> customHeaders = null)
+            Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync(HttpMethod.Delete, path, null, errorHandler, customHeaders);
+            return await RequestAsync(HttpMethod.Delete, path, null, errorHandler, customHeaders, requestTimeout);
         }
 
-        public IHttwrapResponse Delete(string path, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        public IHttwrapResponse Delete(string path, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return Request(HttpMethod.Delete, path, null, errorHandler, customHeaders);
+            return Request(HttpMethod.Delete, path, null, errorHandler, customHeaders, requestTimeout);
 
         }
 
         public async Task<IHttwrapResponse> PatchAsync<T>(string path, T data,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders);
+            return await RequestAsync(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders, requestTimeout);
         }
 
-        public IHttwrapResponse Patch<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+        public IHttwrapResponse Patch<T>(string path, T data, Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            return Request(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders);
+            return Request(new HttpMethod("PATCH"), path, data, errorHandler, customHeaders, requestTimeout);
         }
 
         public void AddInterceptor(IHttpInterceptor interceptor)
@@ -136,9 +136,9 @@ namespace Httwrap
         }
 
         private IHttwrapResponse Request(HttpMethod method, string path, object body,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            var response = RequestImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+            var response = RequestImpl(requestTimeout, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body, customHeaders);
 
             var content = response.Content.ReadAsStringAsync().Result;
@@ -149,9 +149,9 @@ namespace Httwrap
         }
 
         private IHttwrapResponse Request<T>(HttpMethod method, string path, object body,
-          Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+          Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
-            var response = RequestImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+            var response = RequestImpl(requestTimeout, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body, customHeaders);
 
             var content = response.Content.ReadAsStringAsync().Result;
@@ -162,11 +162,11 @@ namespace Httwrap
         }
 
         private async Task<IHttwrapResponse> RequestAsync(HttpMethod method, string path, object body,
-            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null)
+            Action<HttpStatusCode, string> errorHandler = null, Dictionary<string, string> customHeaders = null , TimeSpan? requestTimeout = null)
         {
             var response =
                 await
-                    RequestAsyncImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+                    RequestAsyncImpl(requestTimeout, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body, customHeaders);
 
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -178,11 +178,11 @@ namespace Httwrap
 
         private async Task<IHttwrapResponse<T>> RequestAsync<T>(HttpMethod method, string path,
             object body, Action<HttpStatusCode, string> errorHandler = null,
-            Dictionary<string, string> customHeaders = null)
+            Dictionary<string, string> customHeaders = null, TimeSpan? requestTimeout = null)
         {
             var response =
                 await
-                    RequestAsyncImpl(null, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
+                    RequestAsyncImpl(requestTimeout, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None, method,
                         path, body, customHeaders);
 
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
