@@ -104,3 +104,5 @@ UpgradeLog*.XML
 *.nupkg
 _NCrunch*/
 .vs/
+
+.idea
