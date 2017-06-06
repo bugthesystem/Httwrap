@@ -3,27 +3,35 @@ General purpose, simple but useful HttpClient wrapper for .NET & Xamarin/Mono
 
 [![Build status](https://ci.appveyor.com/api/projects/status/vyg8a2lsw1jf9nki?svg=true)](https://ci.appveyor.com/project/ziyasal/httwrap)[![Coverage Status](https://coveralls.io/repos/ziyasal/Httwrap/badge.svg)](https://coveralls.io/r/ziyasal/Httwrap)
 
-## How to use  
+## How to use
 
-**Install**  
+### Install
+
 ```cs
 PM> Install-Package Httwrap
 ```
-**Init**  
+
+### Init
+
 ```csharp
   IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/");
   IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
-**GET**  
+### GET
+
+#### Basic
+
 ```csharp
 IHttwrapResponse<Product> response = await _httwrap.GetAsync<Product>("api/products/1");
 Dump(response.Data);
 Dump(response.StatusCode);
 ```
 
-**GET with QueryString**  
-*_It supports `DataMember` and `IgnoreDataMember` attributes._*  
+#### With QueryString
+
+*_It supports `DataMember` and `IgnoreDataMember` attributes._*
+
 ```csharp
 /*
 public class FilterRequest
@@ -34,6 +42,7 @@ public class FilterRequest
   public int NumberOfItems { get; set; }
 }
 */
+
 var payload = new FilterRequest
 {
   Category = "Shoes",
@@ -48,7 +57,8 @@ Dump(response.Data);
 Dump(response.StatusCode);
 ```
 
-**GET**  
+#### Serialize response
+
 ```csharp
 IHttwrapResponse response = await _httwrap.GetAsync("api/products");
 List<Product> values = response.ResultAs<List<Product>>();
@@ -58,35 +68,40 @@ Dump(response.StatusCode);
 To use your own serializer set JExtensions.Serializer = new YourCustomSerializerImpl();*/
 ```
 
-**POST**  
+### POST
+
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 IHttwrapResponse response = await _httwrap.PostAsync<Product>("api/products",product);
 Dump(response.StatusCode);
 ```
 
-**PUT**  
+### PUT
+
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3 };
 IHttwrapResponse response = await _httwrap.PutAsync<Product>("api/products/1",product);
 Dump(response.StatusCode);
 ```
 
-**PATCH**  
+### PATCH
+
 ```csharp
 Product product = new Product{ Name= "Product A", Quantity = 3};
 IHttwrapResponse response = await _httwrap.PatchAsync<Product>("api/products/1",product);
 Dump(response.StatusCode);
 ```
 
-**DELETE**  
+### DELETE
+
 ```csharp
 IHttwrapResponse response = await _httwrap.DeleteAsync("api/products/1");
 Dump(response.StatusCode);
 ```
 
 
-**Error Handler**  
+### Error Handler
+
 ```csharp
 IHttwrapResponse<List<Product>> response =
       await _httwrap.GetAsync<List<Product>>("api/products", (statusCode, body) =>
@@ -95,7 +110,10 @@ IHttwrapResponse<List<Product>> response =
       });
 ```
 
-**Basic Credentials**
+### Auth
+
+#### Basic Credentials
+
 ```csharp
 IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
 {
@@ -104,7 +122,8 @@ IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost
 IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
-**OAuth Credentials**  
+#### OAuth Credentials
+
 _**Use existing ```token```**_
 ```csharp
 IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost:9000/")
@@ -113,6 +132,7 @@ IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost
 };
 IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
+
 _**Use Username / password to get token from ```edpoint```**_
 
 ```csharp
@@ -123,31 +143,31 @@ IHttwrapConfiguration configuration = new HttwrapConfiguration("http://localhost
 IHttwrapClient _httwrap = new HttwrapClient(configuration);
 ```
 
-**Interceptor**
+### Req/Res Interceptor
+
 ```csharp
 public class DummyInterceptor : IHttpInterceptor
+{
+    private readonly IHttwrapClient _client;
+
+    public void OnRequest(HttpRequestMessage request)
     {
-        private readonly IHttwrapClient _client;
-
-        public void OnRequest(HttpRequestMessage request)
-        {
-            
-        }
-
-        public void OnResponse(HttpRequestMessage request, HttpResponseMessage response)
-        {
-            response.StatusCode = HttpStatusCode.Accepted;
-        }
     }
-    
+
+   public void OnResponse(HttpRequestMessage request, HttpResponseMessage response)
+   {
+      response.StatusCode = HttpStatusCode.Accepted;
+   }
+}
 client.AddInterceptor(new DummyInterceptor());
-    
 ```
 
 ## Bugs
+
 If you encounter a bug, performance issue, or malfunction, please add an [Issue](https://github.com/ziyasal/Httwrap/issues) with steps on how to reproduce the problem.
 
 ## TODO
+
 - Add more tests
 - Add more documentation
 
