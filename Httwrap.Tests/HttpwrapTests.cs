@@ -206,6 +206,17 @@ namespace Httwrap.Tests
             result.StatusCode.ShouldBeEquivalentTo(HttpStatusCode.NoContent);
         }
 
+        [Test]
+        public async void Get_ByIdWithRequestTimeout_Test()
+        {
+            var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
+            await _client.PostAsync("api/products", product, null, null, TimeSpan.FromSeconds(1));
+
+            var response = await _client.GetAsync<Product>("api/products/1");
+
+            response.Data.Should().NotBeNull();
+        }
+
         [TestFixtureTearDown]
         protected void TesTearDown()
         {
