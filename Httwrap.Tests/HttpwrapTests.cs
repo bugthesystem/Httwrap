@@ -19,7 +19,7 @@ namespace Httwrap.Tests
         private IHttwrapClient _client;
         private const string BaseAddress = "http://localhost:9000/";
 
-        protected override async Task FinalizeSetUp()
+        protected override async void FinalizeSetUp()
         {
             await ClearApiCache().ConfigureAwait(false);
         }
