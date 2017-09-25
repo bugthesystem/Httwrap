@@ -19,9 +19,9 @@ namespace Httwrap.Tests
         private IHttwrapClient _client;
         private const string BaseAddress = "http://localhost:9000/";
 
-        protected override async void FinalizeSetUp()
+        protected override async Task FinalizeSetUp()
         {
-            await ClearApiCache();
+            await ClearApiCache().ConfigureAwait(false);
         }
 
         [TestFixtureSetUp]
@@ -59,7 +59,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Delete_test()
+        public async Task Delete_test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
@@ -71,7 +71,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Get_All_test()
+        public async Task Get_All_test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
@@ -84,7 +84,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Get_ById_ReadAs_test()
+        public async Task Get_ById_ReadAs_test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
@@ -95,7 +95,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Get_ById_test()
+        public async Task Get_ById_test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
@@ -106,7 +106,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Get_With_QueryString_test()
+        public async Task Get_With_QueryString_test()
         {
             var payload = new FilterRequest
             {
@@ -146,7 +146,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Post_test()
+        public async Task Post_test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             var response = await _client.PostAsync("api/products", product);
@@ -156,7 +156,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Interceptor_test()
+        public async Task Interceptor_test()
         {
             Product product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product);
@@ -207,7 +207,7 @@ namespace Httwrap.Tests
         }
 
         [Test]
-        public async void Get_ByIdWithRequestTimeout_Test()
+        public async Task Get_ByIdWithRequestTimeout_Test()
         {
             var product = FixtureRepository.Build<Product>().Without(p => p.Id).Create();
             await _client.PostAsync("api/products", product, null, null, TimeSpan.FromSeconds(1));
